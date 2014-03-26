@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/images/apple-touch-icon-144-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/images/apple-touch-icon-114-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/images/apple-touch-icon-72-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" href="/static/images/apple-touch-icon-57-precomposed.png" />
+	<link rel="shortcut icon" href="/static/images/favicon.png" />
+
+	<title>${title}</title>
+
+	<!--CSS-START-->
+	<link href="/static/css/bootstrap.css" rel="stylesheet" />
+	<link href="/static/css/bootstrapValidator.css" rel="stylesheet" />
+	<link href="/static/css/adampresley.css" rel="stylesheet" />
+	<!--CSS-END-->
+
+	<!--[if lt IE 9]>
+	<script src="/static/js/html5shiv.js"></script>
+	<script src="/static/js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<div id="wrap">
+		<div class="container">
+			<div id="content">
+				${self.body()}
+			</div>
+		</div>
+	</div>
+
+	<footer id="footer">
+		<div class="container">
+			<p class="text-muted credit">&copy; 2014 Adam Presley</p>
+		</div>
+	</footer>
+
+	<!--(if target dev)><!-->
+	<script src="/static/js/require.js"></script>
+	<script src="/static/js/app/admin-login.js"></script>
+	<!--<!(endif)-->
+
+	<!--(if target dist)>
+	<script src="/static/js/require.js"></script>
+	<script src="/static/js/app/all-admin-login.js"></script>
+	<!(endif)-->
+</body>
+</html>

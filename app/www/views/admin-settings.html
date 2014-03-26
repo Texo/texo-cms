@@ -1,0 +1,49 @@
+<%inherit file="admin-template.html" />
+
+<div class="page-header">
+	<h1>Settings</h1>
+	<small>Blog settings</small>
+</div>
+
+% if len(message) > 0:
+	% if not success:
+		<div class="alert alert-danger">
+			${message}
+		</div>
+	% else:
+		<div class="alert alert-success">
+			${message}
+		</div>
+	% endif
+% endif
+
+<form name="frmSettings" role="form" method="POST">
+	<div class="form-group">
+		<label for="timezone" class="control-label">Timezone</label>
+		<div class="input-group">
+			<select name="timezone" class="form-control">
+				% for tz in timezones:
+					<% selected = " selected=\"selected\"" if tz == timezone else "" %>
+					<option value="${tz}"${selected}>${tz}</option>
+				% endfor
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="timezone" class="control-label">Theme</label>
+		<div class="input-group">
+			<select name="theme" class="form-control">
+				% for theme in themes:
+					<% selected = " selected=\"selected\"" if themeName == theme else "" %>
+					<option value="${theme}"${selected}>${theme}</option>
+				% endfor
+			</select>
+		</div>
+	</div>
+
+	<button type="submit" name="btnSave" class="btn btn-primary">
+		<span class="glyphicon glyphicon-floppy-disk"></span>
+		Save Settings
+	</button>
+</form>

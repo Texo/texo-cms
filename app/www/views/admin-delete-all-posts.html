@@ -1,0 +1,21 @@
+<%inherit file="admin-template.html" />
+
+<div class="page-header">
+	<h1>Delete All Posts</h1>
+	<small>When you just need to start over.</small>
+</div>
+
+<div class="alert alert-danger">
+	<strong>Warning!</strong> Clicking the <em>Delete It All</em> button
+	below and confirming will remove all posts and tags. Be 100% sure you want
+	to do this, and <strong>ALWAYS</strong> have a backup.
+</div>
+
+<form name="frmDeleteAll" id="frmDeleteAll" method="POST">
+	<button type="button" id="btnDelete" class="btn btn-danger btn-lg">Delete It All</button>
+	<input type="hidden" name="delete" value="1" />
+</form>
+
+<%block name="script">
+	<script type="text/javascript" src="/static/js/app/admin-delete-all-posts.js"></script>
+</%block>

@@ -1,0 +1,39 @@
+			</div>
+	<section>
+		<h3 class="tags-title">Tags</h3>
+
+		<%
+			tags = getPostTags()
+		%>
+		<div id="tagCloud">
+			% for tagObject in tags:
+				<a href="${tagObject["getPostsByTagUrl"]}"><span class="label label-info tag">${tagObject["tag"]}</span></a>
+			% endfor
+		</div>
+	</section>
+		</div>
+	</div>
+
+
+	<footer id="footer">
+		<div class="container">
+			<p class="text-muted credit">&copy; 2014</p>
+			<p class="text-muted">
+				The following technologies and libraries are used to run, build and deploy this application. All libraries and tools
+				listed below are the copyright of their respective owners.
+
+				<ul class="text-muted">
+					<li><strong>Server</strong> - <a href="http://www.python.org/">Python</a>, <a href="http://www.mysql.com">MySQL</a></li>
+					<li><strong>Client</strong> - <a href="http://jquery.com/">jQuery</a>, <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="https://github.com/adampresley/rajo">Rajo</a>, <a href="http://requirejs.org/">RequireJS</a></li>
+					<li><strong>Build/Deploy</strong> - <a href="http://fabfile.org/">Fabric</a>, <a href="http://www.naturaldocs.org/">NaturalDocs</a></li>
+				</ul>
+			</p>
+		</div>
+	</footer>
+
+	<div id="searchDialog"></div>
+
+	<script src="/theme/static/js/require.js"></script>
+	<script src="/theme/static/js/app/app.js"></script>
+</body>
+</html>

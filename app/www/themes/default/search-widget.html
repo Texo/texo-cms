@@ -1,0 +1,18 @@
+<div class="row margin-bottom-15">
+	<div class="col-md-4">
+		<div class="btn-group">
+			<button type="button" id="btnDiscover" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+				<span class="glyphicon glyphicon-globe"></span>
+				Discover <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a id="searchLink" class="cursor"><span class="glyphicon glyphicon-search"></span> Search</a></li>
+			</ul>
+		</div>
+
+		% if currentPage > 0 and numPages > 0:
+			<br /><br />
+			Viewing page ${currentPage} of ${numPages}
+		% endif
+	</div>
+</div>

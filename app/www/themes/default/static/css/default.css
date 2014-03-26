@@ -1,0 +1,50 @@
+body {
+  min-height: 2000px;
+  padding-bottom: 40px;
+}
+
+/******************************************************************************
+	General styles
+******************************************************************************/
+.cursor { cursor: pointer; }
+.margin-bottom-15 { margin-bottom: 15px; }
+.padding-top-22 { padding-top: 22px; }
+.navbar { margin-bottom: 0px; }
+
+/******************************************************************************
+	Page styles
+******************************************************************************/
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -60px;
+	padding: 0 0 60px;
+}
+
+#footer {
+	height: 60px;
+	background-color: #f5f5f5;
+}
+
+.container .credit {
+	margin: 20px 0;
+}
+
+#content { padding-top: 20px; }
+
+.tags-title { color: #DF7401; border-bottom: 1px solid #eee; margin-bottom: 25px; }
+#tagCloud { width: 100%; margin-bottom: 35px; }
+.tag { margin: 0 10px 20px 0; }
+
+/******************************************************************************
+	Post styles
+******************************************************************************/
+.post { margin-bottom: 25px; }
+.post img { border-radius: 6px; }
+
+/******************************************************************************
+	jQuery UI overrides
+******************************************************************************/
+.ui-dialog .ui-dialog-titlebar { padding: 0; }
+.ui-dialog .ui-dialog-titlebar-close { margin: -12px 0 0 0; }

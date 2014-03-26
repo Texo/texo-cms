@@ -1,0 +1,52 @@
+<%inherit file="admin-template.html" />
+
+<%block name="css">
+	<link href="/static/css/plugins/uploadify/uploadify.css" rel="stylesheet" />
+</%block>
+
+<div class="page-header">
+	<h1>Import Markdown Files</h1>
+	<small>Import well-formed Markdown files as blog entries.</small>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Instructions</div>
+	<div class="panel-body">
+		<p>
+			Select one or more Markdown files to be uploaded and
+			imported into your database as a blog entry. Each file must be formatted
+			in a specific way. Below is an example of how they should look.
+		</p>
+
+		<section class="well">
+			Title: Blog article title<br />
+			Date: 2014-01-01 14:22<br />
+			Author: Adam Presley<br />
+			Tags: development, testing, news<br />
+			Slug: blog-article-title<br />
+			<br />
+
+			This is a blog entry. The header above is important because it will<br />
+			be parsed to figure out the specifics of your entry. The rest is<br />
+			just Markdown.
+		</section>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+		<div id="filesToUpload"></div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">Upload Results</div>
+			<div class="panel-body" id="resultsList" style="height: 300px; overflow-y: scroll;">
+			</div>
+		</div>
+	</div>
+</div>
+
+<%block name="script">
+	<script type="text/javascript" src="/static/js/app/admin-import-markdown-files.js"></script>
+</%block>

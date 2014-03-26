@@ -1,0 +1,57 @@
+<%include file="header.html" />
+
+% if numPosts <= 0:
+	<p>No posts to display</p>
+
+% else:
+	<%include file="search-widget.html" />
+
+	% for post in posts:
+		<div class="post">
+			<div class="row margin-bottom-15">
+				<div class="col-md-10 col-xs-8 col-lg-9">
+					<h2><a href="${post['permalink']}">${post["title"]}</a></h2>
+					<div>Written by <em>${post['author']}</em> on ${post["publishedDateUSFormat"]} at ${post["publishedTime12Hour"]}</div>
+				</div>
+
+				<div class="col-md-2 col-xs-4 col-lg-3 padding-top-22">
+					<div class="postTags">
+						<h6>
+						% for tag in post["tags"]:
+							<a href="/posts/${tag}"><span class="label label-default">${tag}</span></a>
+						% endfor
+						</h6>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<div class="postContent">${post["renderedContent"]}</div>
+				</div>
+			</div>
+		</div>
+	% endfor
+
+	% if showPageNavigation:
+		<ul class="pagination pagination-lg">
+			% if showFirstPageNavButton:
+				<li><a href="/posts/1">First Page</a></li>
+			% endif
+
+			% if showPrevPageNavButton:
+				<li><a href="/posts/${previousPage}">&laquo; Page ${previousPage}</a></li>
+			% endif
+
+			% if showNextPageNavButton:
+				<li><a href="/posts/${nextPage}">Page ${nextPage} &raquo; </a></li>
+			% endif
+
+			% if showLastPageNavButton:
+				<li><a href="/posts/${lastPage}">Last Page</a></li>
+			% endif
+		</ul>
+	% endif
+% endif
+
+<%include file="footer.html" />

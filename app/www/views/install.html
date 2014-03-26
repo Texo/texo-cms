@@ -1,0 +1,111 @@
+<%inherit file="install-template.html" />
+
+<div class="jumbotron">
+	<h1>Texo CMS</h1>
+	<p>
+		Welcome to the Texo CMS installer. Please take a moment and
+		answer the questions below to setup your application.
+	</p>
+</div>
+
+<form role="form" method="POST">
+	<fieldset>
+		<legend>Database</legend>
+
+		<div class="well">
+			<div class="form-group">
+				<label for="databaseServer">Database server address</label>
+				<input type="text" name="databaseServer" id="databaseServer" class="form-control" maxlength="128" placeholder="IP address or name of the server for your database (eg. localhost)" />
+			</div>
+			<div class="form-group">
+				<label for="databaseName">Name of your database</label>
+				<input type="text" name="databaseName" id="databaseName" class="form-control" maxlength="128" placeholder="Name of the database for your application. e.g. blog" />
+			</div>
+			<div class="form-group">
+				<label for="databaseUserName">User name</label>
+				<input type="text" name="databaseUserName" id="databaseUserName" class="form-control" maxlength="50" placeholder="User name used to connect to your database" />
+			</div>
+			<div class="form-group">
+				<label for="databasePassword">Password for your database user</label>
+				<input type="password" name="databasePassword" id="databasePassword" class="form-control" maxlength="128" placeholder="Password for your database user" />
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="margin-top-35">
+		<legend>Security</legend>
+
+		<div class="well">
+			<div class="form-group">
+				<label for="hashKey1">First Hash Key</label>
+				<input type="text" name="hashKey1" id="hashKey1" class="form-control" maxlength="100" placeholder="Provide the 1st key used in hashing (up to 100 characters)" />
+			</div>
+			<div class="form-group">
+				<label for="hashKey2">Second Hash Key</label>
+				<input type="text" name="hashKey2" id="hashKey2" class="form-control" maxlength="100" placeholder="Provide the 2nd key used in hashing (up to 100 characters)" />
+			</div>
+			<div class="form-group">
+				<label for="encryptionKey">Encryption Key</label>
+				<input type="text" name="encryptionKey" id="encryptionKey" class="form-control" maxlength="100" placeholder="Provide a key for use in encrypting data (up to 100 characters)" />
+			</div>
+			<div class="form-group">
+				<label for="encryptionIV">IV/Salt</label>
+				<input type="text" name="encryptionIV" id="encryptionIV" class="form-control" maxlength="100" placeholder="Provide an IV/salt value to make encryption more secure (up to 100 characters)" />
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="margin-top-35">
+		<legend>Administrative User</legend>
+
+		<div class="well">
+			<div class="form-group">
+				<label for="adminFirstName">First name</label>
+				<input type="text" name="adminFirstName" id="adminFirstName" class="form-control" maxlength="50" placeholder="Please enter your first name" />
+			</div>
+			<div class="form-group">
+				<label for="adminLastName">Last name</label>
+				<input type="text" name="adminLastName" id="adminLastName" class="form-control" maxlength="50" placeholder="Please enter your last name" />
+			</div>
+			<div class="form-group">
+				<label for="adminEmail">Administrator email address</label>
+				<input type="email" name="adminEmail" id="adminEmail" class="form-control" maxlength="255" placeholder="Please enter your email address" />
+			</div>
+			<div class="form-group">
+				<label for="adminPassword">Administrator password</label>
+				<input type="password" name="adminPassword" id="adminPassword" class="form-control" maxlength="50" placeholder="Please enter your password" />
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="margin-top-35">
+		<legend>Blog Settings</legend>
+
+		<div class="well">
+			<div class="form-group">
+				<label for="blogTitle">Blog title</label>
+				<input type="text" name="blogTitle" id="blogTitle" class="form-control" maxlength="50" placeholder="What is the name of this blog?" />
+			</div>
+			<div class="form-group">
+				<label for="postsPerPage">Display how many posts per page?</label>
+				<input type="text" name="postsPerPage" id="postsPerPage" class="form-control" maxlength="2" placeholder="How many posts per page do I show? (1-30)" />
+			</div>
+			<div class="form-group">
+				<label for="timezone">Your timezone</label>
+				<select name="timezone" id="timezone" class="form-control">
+					% for t in timezones:
+						<option value="${t}">${t}</option>
+					% endfor
+				</select>
+			</div>
+		</div>
+	</fieldset>
+
+	<button type="submit" name="btnSubmit" id="btnSubmit" class="btn btn-default btn-primary">Configure</button>
+</form>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#databaseServer").focus();
+	});
+</script>

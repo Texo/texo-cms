@@ -1,0 +1,28 @@
+<%include file="header.html" />
+
+<div class="post">
+	<div class="row margin-bottom-15">
+		<div class="col-md-10 col-xs-8 col-lg-9">
+			<h2>${post["title"]}</h2>
+			<div>Written by <em>${post["author"]}</em> on ${post["publishedDateUSFormat"]} at ${post["publishedTime12Hour"]}</div>
+		</div>
+
+		<div class="col-md-2 col-xs-4 col-lg-3 padding-top-22">
+			<div class="postTags">
+				<h6>
+				% for tag in post["tags"]:
+					<a href="/posts/${tag}"><span class="label label-default">${tag}</span></a>
+				% endfor
+				</h6>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="postContent">${post["renderedContent"]}</div>
+		</div>
+	</div>
+</div>
+
+<%include file="footer.html" />
