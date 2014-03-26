@@ -17,6 +17,7 @@ from bottle import mako_view as view
 from bottle import mako_template as template
 from pytz   import timezone
 
+from services.aws import s3service
 from services.datetimehelper import dthelper
 from services.identity import userservice
 from services.http import httpservice
@@ -218,6 +219,10 @@ def adminSettings():
 
 			result["timezone"] = request.all["timezone"]
 			result["themeName"] = request.all["theme"]
+			result["awsAccessKeyId"] = ""
+			result["awsSecretAccessKey"] = ""
+			result["awsBucket"] = ""
+
 			result["message"] = "Settings updated"
 
 		except Exception as e:
@@ -227,6 +232,13 @@ def adminSettings():
 	result["title"] = "Settings"
 	result["timezones"] = dthelper.getTimezoneArray()
 	result["themes"] = engineservice.getInstalledThemeNames()
+	result["awsAccessKeyId"] = ""
+	result["awsSecretAccessKey"] = ""
+	result["awsBucket"] = ""
+	result["awsBuckets"] = []
+
+	if len(result["awsAccessKeyId"]) and len(result["awsSecretAccessKey"]):
+		result["awsBuckets"] = s3service.getBucketList(result["awsAccessKeyId"], result["awsSecretAccessKey"])
 
 	return result
 
