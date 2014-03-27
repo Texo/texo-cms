@@ -49,6 +49,14 @@
 	<fieldset>
 		<legend>Amazon S3</legend>
 
+		% if len(awsAccessKeyId) <= 0 or len(awsSecretAccessKey) <= 0:
+			<div class="alert alert-warning">
+				Please provide your Amazon Web Services access key ID and secret
+				access key. Once provided save this settings page and
+				a list of your S3 buckets will be retrieved.
+			</div>
+		% endif
+
 		<div class="form-group">
 			<label for="awsAccessKeyId" class="control-label">Access Key ID</label>
 			<div class="input-group">
@@ -69,7 +77,8 @@
 				<% disabled = " disabled=\"disabled\"" if not len(awsBuckets) else "" %>
 				<select name="awsBucket" class="form-control"${disabled}>
 					% for bucket in awsBuckets:
-						<option value="${bucket}">${bucket}</option>
+						<% selected = " selected=\"selected\"" if awsBucket == bucket.name else "" %>
+						<option value="${bucket.name}"${selected}>${bucket.name}</option>
 					% endfor
 				</select>
 			</div>
