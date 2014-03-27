@@ -28,7 +28,9 @@ pip-log.txt
 virtualenv
 
 # Deployment
-dist/**/*
+dist/app/**
+dist/conf/**
+dist/docs/**
 
 # Application
 app/www/sessions
