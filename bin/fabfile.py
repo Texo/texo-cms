@@ -227,6 +227,12 @@ def buildall():
 	build()
 
 @task
+def cleanBuildFolder():
+	"""Cleans out the build folder"""
+
+	_cleanBuildFolder()
+
+@task
 def generateDocs():
 	"""Generates the service documentation for Texo CMS using NaturalDocs"""
 
