@@ -14,14 +14,33 @@ import logging
 from boto.s3.connection import S3Connection
 
 #
-# Function: getBucketList
-# This function retrieves Amazon S3 buckets for the
-# specified account.
+# Function: connect
+# Establishes a connection with Amazon S3 services. This returns
+# an S3Connection object.
 #
 # Parameters:
 #    accessKeyId     - AWS Access Key ID
 #    secretAccessKey - AWS Secret Access Key
 #
-def getBucketList(accessKeyId, secretAccessKey):
-	connection = S3Connection(accessKeyId, secretAccessKey)
-	return connection.get_all_buckets()
+def connect(accessKeyId, secretAccessKey):
+	logger = logging.getLogger(__name__)
+
+	try:
+		connection = S3Connection(accessKeyId, secretAccessKey)
+		return connection
+
+	except Exception as e:
+		logger.error(e.message)
+		raise e
+
+#
+# Function: getBucketList
+# This function retrieves Amazon S3 buckets for the
+# specified account.
+#
+# Parameters:
+#    connection - An S3Connection object
+#
+def getBucketList(connection):
+	buckets = connection.get_all_buckets()
+	return buckets
