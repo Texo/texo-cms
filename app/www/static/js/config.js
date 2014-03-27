@@ -25,7 +25,10 @@ require.config({
 		"jqplot.canvasAxisTickRenderer": "jqplot/jqplot.canvasAxisTickRenderer.min",
 		"jqplot.categoryAxisRenderer": "jqplot/jqplot.categoryAxisRenderer.min",
 
-		"uploadify": "uploadify/jquery.uploadify.min"
+		"uploadify": "uploadify/jquery.uploadify.min",
+
+		"markdown": "jquery-plugins/markdown",
+		"markdown-editor": "jquery-plugins/bootstrap-markdown"
 	},
 	shim: {
 		"jqueryui": { deps: ["jquery"] },
@@ -38,6 +41,9 @@ require.config({
 		"jqplot.canvasAxisTickRenderer": { deps: ["jqplot"] },
 		"jqplot.categoryAxisRenderer": { deps: ["jqplot"] },
 
-		"uploadify": { deps: ["jquery"] }
+		"uploadify": { deps: ["jquery"] },
+
+		"markdown": { exports: "markdown" },
+		"markdown-editor": { deps: ["jquery", "bootstrap", "markdown"] }
 	}
 });

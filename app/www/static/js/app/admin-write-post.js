@@ -6,14 +6,16 @@
  *    jquery
  *    admin
  *    bootstrapValidator
+ *    markdown-editor
  */
 require(["/static/js/config.js"], function() {
+	"use strict";
+
 	require(
 		[
-			"jquery", "admin", "bootstrapValidator"
+			"jquery", "admin", "bootstrapValidator", "markdown-editor"
 		],
 		function($, Admin) {
-			"use strict";
 
 			/*
 			 * Apply form validation
@@ -45,10 +47,12 @@ require(["/static/js/config.js"], function() {
 				}
 			});
 
+
 			$("#btnCancel").click(function() {
 				window.location = "/admin/posts";
 			});
 
+			$("#postContent").markdown();
 			$("#postTitle").focus();
 		}
 	);

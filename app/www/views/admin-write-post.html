@@ -1,5 +1,10 @@
 <%inherit file="admin-template.html" />
 
+<%block name="css">
+	<link href="/static/css/plugins/bootstrap-markdown/bootstrap-markdown.min.css" rel="stylesheet" />
+</%block>
+
+
 <div class="page-header">
 	<h1>Write Post</h1>
 </div>
@@ -59,6 +64,7 @@
 		Cancel
 	</button>
 </form>
+
 
 <%block name="script">
 	<script src="/static/js/app/admin-write-post.js"></script>
