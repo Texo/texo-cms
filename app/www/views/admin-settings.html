@@ -18,32 +18,79 @@
 % endif
 
 <form name="frmSettings" role="form" method="POST">
-	<div class="form-group">
-		<label for="timezone" class="control-label">Timezone</label>
-		<div class="input-group">
-			<select name="timezone" class="form-control">
-				% for tz in timezones:
-					<% selected = " selected=\"selected\"" if tz == timezone else "" %>
-					<option value="${tz}"${selected}>${tz}</option>
-				% endfor
-			</select>
-		</div>
-	</div>
+	<fieldset>
+		<legend>General</legend>
 
-	<div class="form-group">
-		<label for="timezone" class="control-label">Theme</label>
-		<div class="input-group">
-			<select name="theme" class="form-control">
-				% for theme in themes:
-					<% selected = " selected=\"selected\"" if themeName == theme else "" %>
-					<option value="${theme}"${selected}>${theme}</option>
-				% endfor
-			</select>
+		<div class="form-group">
+			<label for="timezone" class="control-label">Timezone</label>
+			<div class="input-group">
+				<select name="timezone" class="form-control">
+					% for tz in timezones:
+						<% selected = " selected=\"selected\"" if tz == timezone else "" %>
+						<option value="${tz}"${selected}>${tz}</option>
+					% endfor
+				</select>
+			</div>
 		</div>
-	</div>
+
+		<div class="form-group">
+			<label for="timezone" class="control-label">Theme</label>
+			<div class="input-group">
+				<select name="theme" class="form-control">
+					% for theme in themes:
+						<% selected = " selected=\"selected\"" if themeName == theme else "" %>
+						<option value="${theme}"${selected}>${theme}</option>
+					% endfor
+				</select>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>Amazon S3</legend>
+
+		% if len(awsAccessKeyId) <= 0 or len(awsSecretAccessKey) <= 0:
+			<div class="alert alert-warning">
+				Please provide your Amazon Web Services access key ID and secret
+				access key. Once provided save this settings page and
+				a list of your S3 buckets will be retrieved.
+			</div>
+		% endif
+
+		<div class="form-group">
+			<label for="awsAccessKeyId" class="control-label">Access Key ID</label>
+			<div class="input-group">
+				<input type="text" name="awsAccessKeyId" id="awsAccessKeyId" value="${awsAccessKeyId}" class="form-control" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="awsSecretAccessKey" class="control-label">Secret Access Key</label>
+			<div class="input-group">
+				<input type="text" name="awsSecretAccessKey" id="awsSecretAccessKey" value="${awsSecretAccessKey}" class="form-control" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="awsBucket" class="control-label">Bucket</label>
+			<div class="input-group">
+				<% disabled = " disabled=\"disabled\"" if not len(awsBuckets) else "" %>
+				<select name="awsBucket" class="form-control"${disabled}>
+					% for bucket in awsBuckets:
+						<% selected = " selected=\"selected\"" if awsBucket == bucket.name else "" %>
+						<option value="${bucket.name}"${selected}>${bucket.name}</option>
+					% endfor
+				</select>
+			</div>
+		</div>
+	</fieldset>
 
 	<button type="submit" name="btnSave" class="btn btn-primary">
 		<span class="glyphicon glyphicon-floppy-disk"></span>
 		Save Settings
 	</button>
 </form>
+
+<%block name="script">
+	<script type="text/javascript" src="/static/js/app/admin-settings.js"></script>
+</%block>

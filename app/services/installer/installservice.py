@@ -61,6 +61,14 @@ def setupDatabase(dbServer, dbPort, dbName, dbUser, dbPass, email, password, fir
 	""")
 
 	database.execute("""
+		CREATE TABLE awssettings (
+			accessKeyId VARCHAR(50),
+			secretAccessKey VARCHAR(50),
+			s3Bucket VARCHAR(100)
+		) ENGINE=MyISAM;
+	""")
+
+	database.execute("""
 		CREATE TABLE `user` (
 			`id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 			`email` VARCHAR(255) NOT NULL UNIQUE,
@@ -148,6 +156,10 @@ def setupDatabase(dbServer, dbPort, dbName, dbUser, dbPass, email, password, fir
 			('Published'),
 			('Archived')
 		;
+	""")
+
+	database.execute("""
+		INSERT INTO awssettings (accessKeyId, secretAccessKey, s3Bucket) VALUES ('', '', '');
 	""")
 
 def _configReplaceBlogTitle(configContents, blogTitle):

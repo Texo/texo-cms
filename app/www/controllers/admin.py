@@ -17,6 +17,8 @@ from bottle import mako_view as view
 from bottle import mako_template as template
 from pytz   import timezone
 
+from services.aws import awsservice
+from services.aws import s3service
 from services.datetimehelper import dthelper
 from services.identity import userservice
 from services.http import httpservice
@@ -200,6 +202,7 @@ def adminSettings():
 	logger = logging.getLogger(__name__)
 
 	result = engineservice.getSettings()
+
 	result["success"] = True
 	result["message"] = ""
 
@@ -216,17 +219,38 @@ def adminSettings():
 				theme    = request.all["theme"]
 			)
 
+			awsservice.saveSettings(
+				accessKeyId=request.all["awsAccessKeyId"],
+				secretAccessKey=request.all["awsSecretAccessKey"],
+				s3Bucket="" if "awsBucket" not in request.all else request.all["awsBucket"]
+			)
+
 			result["timezone"] = request.all["timezone"]
 			result["themeName"] = request.all["theme"]
+			result["awsAccessKeyId"] = request.all["awsAccessKeyId"]
+			result["awsSecretAccessKey"] = request.all["awsSecretAccessKey"]
+			result["awsBucket"] = "" if "awsBucket" not in request.all else request.all["awsBucket"]
+
 			result["message"] = "Settings updated"
 
 		except Exception as e:
 			result["success"] = False
 			result["message"] = e.message
 
+	awsSettings = awsservice.getSettings()
+
 	result["title"] = "Settings"
 	result["timezones"] = dthelper.getTimezoneArray()
 	result["themes"] = engineservice.getInstalledThemeNames()
+
+	result["awsAccessKeyId"] = awsSettings["accessKeyId"]
+	result["awsSecretAccessKey"] = awsSettings["secretAccessKey"]
+	result["awsBucket"] = awsSettings["s3Bucket"]
+	result["awsBuckets"] = []
+
+	if len(result["awsAccessKeyId"]) and len(result["awsSecretAccessKey"]):
+		awsConnection = s3service.connect(accessKeyId=result["awsAccessKeyId"], secretAccessKey=result["awsSecretAccessKey"])
+		result["awsBuckets"] = s3service.getBucketList(connection=awsConnection)
 
 	return result
 
