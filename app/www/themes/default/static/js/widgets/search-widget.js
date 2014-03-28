@@ -127,7 +127,7 @@ define(["jquery", "widget-tools", "jqueryui"], function($, WidgetTools) {
 		},
 
 		options: {
-			title   : "Seach",
+			title   : "Search",
 			width   : 400,
 			autoOpen: false,
 			modal   : true,
