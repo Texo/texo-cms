@@ -34,6 +34,44 @@ def connect(accessKeyId, secretAccessKey):
 		raise e
 
 #
+# Function: getBucket
+# Returns an Amazon S3 bucket object.
+#
+# Parameters:
+#    connection - An S3Connection object
+#    bucketName - Name of an S3 bucket
+#
+def getBucket(connection, bucketName):
+	logger = logging.getLogger(__name__)
+
+	try:
+		bucket = connection.get_bucket(bucketName)
+		return bucket
+
+	except Exception as e:
+		logger.error(e.message)
+		raise e
+
+#
+# Function: getBucketItems
+# Returns a list of all items in an Amazon S3 bucket.
+#
+# Parameters:
+#    connection - An S3Connection object
+#    bucketName - Name of an S3 bucket
+#
+def getBucketItems(connection, bucketName):
+	logger = logging.getLogger(__name__)
+
+	try:
+		bucket = getBucket(connection=connection, bucketName=bucketName)
+		return bucket.list()
+
+	except Exception as e:
+		logger.error(e.message)
+		raise e
+
+#
 # Function: getBucketList
 # This function retrieves Amazon S3 buckets for the
 # specified account.
