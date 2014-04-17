@@ -9,6 +9,9 @@ require.config({
 		"blockui": "jquery-plugins/jquery.blockUI",
 		"bootstrapValidator": "jquery-plugins/bootstrapValidator",
 
+		"widget-tools": "widgets/widget-tools",
+		"s3browser-widget": "widgets/s3browser-widget",
+
 		"rajo.dom": "rajo/rajo.dom",
 		"rajo.identity.persona": "rajo/rajo.identity.persona",
 		"rajo.pubsub": "rajo/rajo.pubsub",
