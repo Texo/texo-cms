@@ -13,9 +13,13 @@ require(["/static/js/config.js"], function() {
 
 	require(
 		[
-			"jquery", "admin", "bootstrapValidator", "markdown-editor"
+			"jquery", "admin", "rajo.pubsub", "bootstrapValidator", "markdown-editor",
+			"s3browser-widget"
 		],
-		function($, Admin) {
+		function($, Admin, PubSub) {
+			var
+				subscriberIsSetup = false;
+
 
 			/*
 			 * Apply form validation
@@ -52,7 +56,39 @@ require(["/static/js/config.js"], function() {
 				window.location = "/admin/posts";
 			});
 
-			$("#postContent").markdown();
+			$("#s3browser").S3Browser();
+
+			$("#postContent").markdown({
+				additionalButtons: [
+					[
+						{
+							name: "s3group",
+							data: [
+								{
+									name: "cmdS3Browser",
+									title: "S3 Browser",
+									icon: "glyphicon glyphicon-list-alt",
+									callback: function(e) {
+										if (!subscriberIsSetup) {
+											subscriberIsSetup = true;
+
+											PubSub.subscribe("s3browser-widget.select", function(info) {
+												console.log(info);
+												e.replaceSelection(info.imageUrl);
+												$("#s3browser").S3Browser("close");
+											});
+										}
+
+										$("#s3browser").S3Browser("open");
+
+									}
+								}
+							]
+						}
+					]
+				]
+			});
+
 			$("#postTitle").focus();
 		}
 	);
