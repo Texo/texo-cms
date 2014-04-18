@@ -73,7 +73,6 @@ require(["/static/js/config.js"], function() {
 											subscriberIsSetup = true;
 
 											PubSub.subscribe("s3browser-widget.select", function(info) {
-												console.log(info);
 												e.replaceSelection(info.imageUrl);
 												$("#s3browser").S3Browser("close");
 											});
