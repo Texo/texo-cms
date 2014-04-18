@@ -12,7 +12,7 @@
  * *s3browser-widget.select* is fired.
  *
  * Exports:
- *    $.ui.S3Browser
+ *    $.S3Browser
  *
  * RequireJS Name:
  *    s3browser-widget
@@ -20,6 +20,7 @@
  * Dependencies:
  *    jquery
  *    jqueryui
+ *    rajo.pubsub
  *
  * Commands:
  *    open - Opens the S3 Browser
