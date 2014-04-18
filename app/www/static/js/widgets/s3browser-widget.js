@@ -144,7 +144,7 @@ define(
 					if (!success) {
 						$el.html(fileName + " - " + errorMessage);
 					} else {
-						$el.html(fileName + " imported successfully");
+						$el.html(fileName + " uploaded successfully");
 					}
 
 					$el.append($("<button />").addClass("close").attr({ "type": "button", "data-dismiss": "alert", "aria-hidden": "true" }).html("&times;"));
