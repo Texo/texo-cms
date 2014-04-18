@@ -9,8 +9,12 @@ require.config({
 		"blockui": "jquery-plugins/jquery.blockUI",
 		"bootstrapValidator": "jquery-plugins/bootstrapValidator",
 
+		"markdown": "jquery-plugins/markdown",
+		"markdown-editor": "jquery-plugins/bootstrap-markdown",
+
 		"widget-tools": "widgets/widget-tools",
 		"s3browser-widget": "widgets/s3browser-widget",
+		"markdown-editor-s3-widget": "widgets/markdown-editor-s3-widget",
 
 		"rajo.dom": "rajo/rajo.dom",
 		"rajo.identity.persona": "rajo/rajo.identity.persona",
@@ -28,10 +32,7 @@ require.config({
 		"jqplot.canvasAxisTickRenderer": "jqplot/jqplot.canvasAxisTickRenderer.min",
 		"jqplot.categoryAxisRenderer": "jqplot/jqplot.categoryAxisRenderer.min",
 
-		"uploadify": "uploadify/jquery.uploadify.min",
-
-		"markdown": "jquery-plugins/markdown",
-		"markdown-editor": "jquery-plugins/bootstrap-markdown"
+		"uploadify": "uploadify/jquery.uploadify.min"
 	},
 	shim: {
 		"jqueryui": { deps: ["jquery"] },
@@ -39,14 +40,14 @@ require.config({
 		"blockui": { deps: ["jquery"] },
 		"bootstrapValidator": { deps: ["jquery"] },
 
+		"markdown": { exports: "markdown" },
+		"markdown-editor": { deps: ["jquery", "bootstrap", "markdown"] },
+
 		"jqplot": { deps: ["jquery"], exports: "$.jqplot" },
 		"jqplot.canvasTextRenderer": { deps: ["jqplot"] },
 		"jqplot.canvasAxisTickRenderer": { deps: ["jqplot"] },
 		"jqplot.categoryAxisRenderer": { deps: ["jqplot"] },
 
-		"uploadify": { deps: ["jquery"] },
-
-		"markdown": { exports: "markdown" },
-		"markdown-editor": { deps: ["jquery", "bootstrap", "markdown"] }
+		"uploadify": { deps: ["jquery"] }
 	}
 });

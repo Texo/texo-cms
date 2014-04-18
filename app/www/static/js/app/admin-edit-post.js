@@ -4,18 +4,18 @@
  *
  * Dependencies:
  *    jquery
- *    <Admin>
  *    boostrapValidator
- *    markdown-editor
+ *    markdown-editor-s3-widget
  */
 require(["/static/js/config.js"], function() {
 	"use strict";
 
 	require(
 		[
-			"jquery", "admin", "bootstrapValidator", "markdown-editor"
+			"jquery", "bootstrapValidator", "markdown-editor-s3-widget"
 		],
-		function($, Admin) {
+		function($) {
+			"use strict";
 
 			/*
 			 * Apply form validation
@@ -51,7 +51,7 @@ require(["/static/js/config.js"], function() {
 				window.history.back();
 			});
 
-			$("#postContent").markdown();
+			$("#postContent").MarkdownEditorS3();
 			$("#postTitle").focus();
 		}
 	);
