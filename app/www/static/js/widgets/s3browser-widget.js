@@ -23,7 +23,7 @@
  *    rajo.pubsub
  *
  * Commands:
- *    open - Opens the S3 Browser
+ *    open - Opens the S3 Browser. Can pass an option object that is passed on in events
  *    close - Closes the S3 Browser
  *
  * Example:
