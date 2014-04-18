@@ -19,9 +19,11 @@
  *    markdown-editor
  *
  * Example:
- *    > require(["jquery", "markdown-editor-s3-widget"], function($) {
- *    >    $("#someDiv").MarkdownEditorS3();
- *    > });
+ *    (start code)
+ *    require(["jquery", "markdown-editor-s3-widget"], function($) {
+ *       $("#someDiv").MarkdownEditorS3();
+ *    });
+ *    (end)
  */
 define(
 	[

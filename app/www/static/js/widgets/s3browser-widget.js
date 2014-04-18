@@ -27,10 +27,12 @@
  *    close - Closes the S3 Browser
  *
  * Example:
- *    > require(["jquery", "s3browser-widget"], function($) {
- *    >    $("#someDiv").S3Browser();
- *    >    $("#someDiv").S3Browser("open");
- *    > });
+ *    (start code)
+ *    require(["jquery", "s3browser-widget"], function($) {
+ *       $("#someDiv").S3Browser();
+ *       $("#someDiv").S3Browser("open");
+ *    });
+ *    (end)
  */
 define(
 	[
