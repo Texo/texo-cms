@@ -1,3 +1,28 @@
+/**
+ * Class: MarkdownEditorS3
+ * This class provides a widget that wraps two other widgets. It will
+ * attach a Markdown Editor (http://toopay.github.io/bootstrap-markdown/)
+ * to the specified DOM element. It then adds a custom button that opens
+ * the S3Browser widget for working with an S3 bucket.
+ *
+ * Exports:
+ *    $.MarkdownEditorS3
+ *
+ * RequireJS Name:
+ *    markdown-editor-s3-widget
+ *
+ * Dependencies:
+ *    jquery
+ *    rajo.pubsub
+ *    widget-tools
+ *    s3browser-widget
+ *    markdown-editor
+ *
+ * Example:
+ *    > require(["jquery", "markdown-editor-s3-widget"], function($) {
+ *    >    $("#someDiv").MarkdownEditorS3();
+ *    > });
+ */
 define(
 	[
 		"jquery", "rajo.pubsub", "widget-tools", "s3browser-widget", "markdown-editor"
