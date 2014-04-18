@@ -254,6 +254,63 @@ def adminSettings():
 
 	return result
 
+@route("/admin/upload/image", method="DELETE")
+@requireSession
+def adminUploadDeleteImageFile():
+	logger = logging.getLogger(__name__)
+
+	try:
+		awsSettings = awsservice.getSettings()
+		connection = s3service.connect(accessKeyId=awsSettings["accessKeyId"], secretAccessKey=awsSettings["secretAccessKey"])
+
+		s3service.deleteFile(connection=connection, bucketName=awsSettings["s3Bucket"], keyName=request.all["key"])
+
+	except Exception as e:
+		logger.error(e.message, exc_info=True)
+		return e.message
+
+	return "ok"
+
+@route("/admin/upload/image", method="POST")
+@requireSession
+def adminUploadImageFile():
+	logger = logging.getLogger(__name__)
+
+	f = request.files.get("upload")
+	name, ext = os.path.splitext(f.filename)
+
+	if ext not in (".jpg", ".jpeg", ".png",):
+		return "Invalid file type"
+
+	#
+	# Upload the file, then send it to Amazon S3
+	#
+	f.save(config.UPLOAD_PATH, True)
+
+	try:
+		fullUploadedFilePath = os.path.join(config.UPLOAD_PATH, f.filename)
+
+		awsSettings = awsservice.getSettings()
+		connection = s3service.connect(accessKeyId=awsSettings["accessKeyId"], secretAccessKey=awsSettings["secretAccessKey"])
+
+		name = os.path.basename(fullUploadedFilePath)
+		keyName = "/posts/%s" % name
+
+		s3service.saveFile(connection=connection, bucketName=awsSettings["s3Bucket"], filePathAndName=fullUploadedFilePath, keyName=keyName)
+
+	except Exception as e:
+		logger.error(e.message, exc_info=True)
+		return e.message
+
+	finally:
+		try:
+			os.remove(fullUploadedFilePath)
+
+		except OSError as ose:
+			logger.error(ose.message, exc_info=True)
+
+	return "ok"
+
 @route("/admin/upload/markdownfile", method="POST")
 @requireSession
 def adminUploadMarkdownFile():
