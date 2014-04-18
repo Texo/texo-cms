@@ -8,7 +8,7 @@
  * same options available to the dialog widget are available in the S3Browser
  * widget.
  *
- * When an image is selected in the S3 Browser an event labeled 
+ * When an image is selected in the S3 Browser an event labeled
  * *s3browser-widget.select* is fired.
  *
  * Exports:
@@ -37,8 +37,10 @@ define(
 	],
 	function($, PubSub) {
 		"use strict";
-		
-		var 
+
+		var
+			_dialogs = {},
+
 			/**
 			 * Fuction: _createDom
 			 * Method that creates the DOM for a single instance of this dialog widget.
@@ -64,7 +66,7 @@ define(
 				dialogEl.html(body);
 
 				/*
-				 * Assign a click event handler to any element with a class of 
+				 * Assign a click event handler to any element with a class of
 				 * "s3BrowserWidgetItem" that is a child of our container element.
 				 */
 				$(el).on("click", ".s3BrowserWidgetItem", function() {
@@ -76,7 +78,7 @@ define(
 			/**
 			 * Function: _createThumbnailItemDom
 			 * Creates an individual thumbnail DOM item and returns it.
-			 * 
+			 *
 			 * Parameters:
 			 *    thumbnailUrl - URL to the image thumbnail
 			 */
@@ -107,19 +109,30 @@ define(
 			},
 
 			/**
+			 * Function: _onClose
+			 * Event handler for the *Close* button. This will close the dialog
+			 * which owns the button responsible for this event.
+			 */
+			_onClose = function(dialogEl) {
+				_dialogs[dialogEl.id].dialog.close();
+			},
+
+			/**
 			 * Function: _onDelete
 			 * Event handler for the *Delete* button. This will publish an event named
 			 * *s3browser-widget.delete* with a reference to the dialog element, the
-			 * URL of the image, and the S3 key name.
+			 * URL of the image, and the S3 key name. It will also append any callback options
+			 * passed in the "open" method.
 			 */
 			_onDelete = function(dialogEl) {
 				var selectedImageEl = $(dialogEl).find(".s3BrowserWidgetItem.img-thumbnail");
 
 				if (selectedImageEl.length > 0) {
 					PubSub.publish("s3browser-widget.delete", {
-						dialogEl: dialogEl,
-						imageUrl: selectedImageEl[0].src,
-						name    : selectedImageEl[0].getAttribute("data-name")
+						dialogEl       : dialogEl,
+						imageUrl       : selectedImageEl[0].src,
+						name           : selectedImageEl[0].getAttribute("data-name"),
+						callbackOptions: _dialogs[dialogEl.id].callbackOptions
 					});
 				}
 			},
@@ -128,16 +141,18 @@ define(
 			 * Function: _onSelect
 			 * Event handler for the *Select* button. This will publish an event
 			 * named *s3browser-widget.select* with a reference to the dialog element, the
-			 * URL of the image, and the S3 key name.
+			 * URL of the image, and the S3 key name. It will also append any callback options
+			 * passed in the "open" method.
 			 */
 			_onSelect = function(dialogEl) {
 				var selectedImageEl = $(dialogEl).find(".s3BrowserWidgetItem.img-thumbnail");
 
 				if (selectedImageEl.length > 0) {
 					PubSub.publish("s3browser-widget.select", {
-						dialogEl: dialogEl,
-						imageUrl: selectedImageEl[0].src,
-						name    : selectedImageEl[0].getAttribute("data-name")
+						dialogEl       : dialogEl,
+						imageUrl       : selectedImageEl[0].src,
+						name           : selectedImageEl[0].getAttribute("data-name"),
+						callbackOptions: _dialogs[dialogEl.id].callbackOptions
 					});
 				}
 			},
@@ -156,12 +171,22 @@ define(
 			};
 
 		/*
-		 * Create the widget in the "adampresley" namespace using the 
+		 * Create the widget in the "adampresley" namespace using the
 		 * jQuery UI WidgetFactory.
 		 */
 		$.widget("adampresley.S3Browser", $.ui.dialog, {
 			_create: function() {
 				_createDom(this.options.getBucketListEndpoint, this.element, this.element[0].id);
+				_dialogs[this.element[0].id] = {};
+				this._super();
+			},
+
+			open: function(callbackOptions) {
+				this.options.callbackOptions = callbackOptions;
+
+				_dialogs[this.element[0].id].callbackOptions = callbackOptions;
+				_dialogs[this.element[0].id].dialog = this;
+
 				this._super();
 			},
 
@@ -184,6 +209,10 @@ define(
 					{
 						text : "Delete",
 						click: function() { _onDelete(this); }
+					},
+					{
+						text : "Close",
+						click: function() { _onClose(this); }
 					}
 				],
 

@@ -59,6 +59,16 @@ require(["/static/js/config.js"], function() {
 			$("#s3browser").S3Browser();
 
 			$("#postContent").markdown({
+				onFocus: function(e) {
+					try {
+						e.disableButtons("cmdImage");
+					} catch (e) {}
+				},
+				onShow: function(e) {
+					try {
+						e.disableButtons("cmdImage");
+					} catch (e) {}
+				},
 				additionalButtons: [
 					[
 						{
@@ -69,16 +79,30 @@ require(["/static/js/config.js"], function() {
 									title: "S3 Browser",
 									icon: "glyphicon glyphicon-list-alt",
 									callback: function(e) {
+										var
+											selected           = e.getSelection(),
+											cursor             = selected.start,
+											defaultDescription = "Description",
+											startPos           = cursor + 2,
+											endPos             = defaultDescription.length + startPos;
+
 										if (!subscriberIsSetup) {
 											subscriberIsSetup = true;
 
 											PubSub.subscribe("s3browser-widget.select", function(info) {
-												e.replaceSelection(info.imageUrl);
 												$("#s3browser").S3Browser("close");
+
+												var chunk = "![" + defaultDescription + "](" + info.imageUrl + ")";
+
+												e.replaceSelection(chunk);
+												e.setSelection(info.callbackOptions.startPos, info.callbackOptions.endPos);
 											});
 										}
 
-										$("#s3browser").S3Browser("open");
+										$("#s3browser").S3Browser("open", {
+											startPos: startPos,
+											endPos: endPos
+										});
 
 									}
 								}
