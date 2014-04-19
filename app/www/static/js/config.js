@@ -13,6 +13,7 @@ require.config({
 		"markdown-editor": "jquery-plugins/bootstrap-markdown",
 
 		"widget-tools": "widgets/widget-tools",
+		"tools-service": "services/ToolsService",
 		"s3browser-widget": "widgets/s3browser-widget",
 		"markdown-editor-s3-widget": "widgets/markdown-editor-s3-widget",
 

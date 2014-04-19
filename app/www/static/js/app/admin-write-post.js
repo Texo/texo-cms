@@ -13,10 +13,10 @@ require(["/static/js/config.js"], function() {
 
 	require(
 		[
-			"jquery", "rajo.pubsub", "bootstrapValidator",
+			"jquery", "rajo.pubsub", "tools-service", "bootstrapValidator",
 			"markdown-editor-s3-widget"
 		],
-		function($, PubSub) {
+		function($, PubSub, ToolsService) {
 			/*
 			 * Apply form validation
 			 */
@@ -50,6 +50,13 @@ require(["/static/js/config.js"], function() {
 
 			$("#btnCancel").click(function() {
 				window.location = "/admin/posts";
+			});
+
+			/*
+			 * Auto-populate slug upon blur of title
+			 */
+			$("#postTitle").on("blur", function() {
+				$("#postSlug").val(ToolsService.slugifyPostTitle($(this).val()));
 			});
 
 			$("#postContent").MarkdownEditorS3();
