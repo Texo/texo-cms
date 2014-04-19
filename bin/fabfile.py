@@ -267,6 +267,12 @@ def generateDocs():
 	local(" ".join(args))
 
 @task
+def restartTexoService():
+	"""Restarts the Texo Upstart Service Jop"""
+
+	sudo("service texocms restart")
+
+@task
 def setupAppRequirements():
 	"""Sets up the software necessary for a clean OS to run Texo CMS"""
 
