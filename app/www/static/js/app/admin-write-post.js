@@ -4,6 +4,7 @@
  *
  * Dependencies:
  *    jquery
+ *    rajo.pubsub
  *    bootstrapValidator
  *    markdown-editor-s3-widget
  */
@@ -12,12 +13,10 @@ require(["/static/js/config.js"], function() {
 
 	require(
 		[
-			"jquery", "admin", "rajo.pubsub", "bootstrapValidator",
+			"jquery", "rajo.pubsub", "bootstrapValidator",
 			"markdown-editor-s3-widget"
 		],
-		function($, Admin, PubSub) {
-			"use strict";
-
+		function($, PubSub) {
 			/*
 			 * Apply form validation
 			 */
