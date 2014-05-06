@@ -16,3 +16,4 @@ rednose
 requests
 sqlalchemy
 validate_email
+slimit
