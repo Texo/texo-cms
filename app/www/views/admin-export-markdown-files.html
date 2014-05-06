@@ -1,0 +1,42 @@
+<%inherit file="admin-template.html" />
+
+<div class="page-header">
+	<h1>Export Markdown Files</h1>
+	<small>Export blog entries as Markdown files for download in a ZIP file.</small>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Information</div>
+	<div class="panel-body">
+		<p>
+			Your blog entries will be exported as Markdown files in a format similar to the
+			sample below. These files will be placed into a ZIP file and a download will start.
+			This is useful as a means of a readable backup of your blog entries.
+		</p>
+
+		<p>
+			Please be <strong>patient</strong> as this could take a minute.
+		</p>
+
+		<section class="well">
+			Title: Blog article title<br />
+			Date: 2014-01-01 14:22<br />
+			Author: Adam Presley<br />
+			Tags: development, testing, news<br />
+			Slug: blog-article-title<br />
+			<br />
+
+			This is a blog entry. The header above is important because it will<br />
+			be parsed to figure out the specifics of your entry. The rest is<br />
+			just Markdown.
+		</section>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+		<form name="exportMarkdownFilesForm" id="exportMarkdownFilesForm" method="POST">
+			<button type="submit" name="btnExport" id="btnExport" class="btn btn-primary">Export Blog Entries</button>
+		</form>
+	</div>
+</div>
