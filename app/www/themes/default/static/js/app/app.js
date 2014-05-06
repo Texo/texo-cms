@@ -12,7 +12,7 @@ require(["/theme/static/js/config.js"], function() {
 
 	require(
 		[
-			"jquery", "search-widget", "bootstrap"
+			"jquery", "search-widget", "bootstrap", "raptorize"
 		],
 		function($) {
 
@@ -41,6 +41,9 @@ require(["/theme/static/js/config.js"], function() {
 				}
 
 				$("#searchLink").click(function() { $("#searchDialog").SearchWidget("open"); });
+				$("body").raptorize({
+					enterOn: "konami-code"
+				});
 			});
 		}
 	);

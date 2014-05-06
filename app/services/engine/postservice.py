@@ -12,6 +12,7 @@
 # Author:
 #    Adam Presley
 #
+import os
 import math
 import uuid
 import config
@@ -372,6 +373,38 @@ def filterPostsByTag(posts, tag=None):
 		results = [post for post in posts if tagObject in post.tags]
 
 	return results
+
+#
+# Function: generateMarkdownFile
+# Takes a post and and generates Markdown and saves it to a file
+# in the temporary "uploads" folder.
+#
+# Returns:
+#    A file name
+def generateMarkdownFile(post):
+	result = """Title: %s
+Date: %s
+Author: %s
+Status: %s
+Tags: %s
+Slug: %s
+
+%s""" % (
+			post["title"],
+			post["publishedDateTime"],
+			post["author"],
+			post["status"],
+			post["tagList"],
+			post["slug"],
+			post["content"],
+		)
+
+	filename = os.path.join(config.UPLOAD_PATH, post["slug"]) + ".md"
+
+	with open(filename, "w") as blogFile:
+		blogFile.write(result)
+
+	return filename
 
 #
 # Function: getAllPublishedPosts

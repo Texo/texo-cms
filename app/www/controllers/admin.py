@@ -2,6 +2,7 @@ import os
 import bottle
 import config
 import logging
+import zipfile
 import markdown
 import requests
 import pytz
@@ -26,6 +27,14 @@ from services.engine import postservice
 from services.engine import engineservice
 from services.engine import reportservice
 from decorators.requireSessionDecorator import *
+
+try:
+	import zlib
+	compression = zipfile.ZIP_DEFLATED
+
+except:
+	compression = zipfile.ZIP_STORED
+
 
 @route("/admin", method="GET")
 @view("admin-dashboard.html")
@@ -93,8 +102,56 @@ def adminEditPost(id=0):
 		"postContent": post["content"],
 	}
 
+@route("/admin/utilities/exportmarkdownfiles", method="GET")
+@route("/admin/utilities/exportmarkdownfiles", method="POST")
+@view("admin-export-markdown-files.html")
+@requireSession
+def adminExportMarkdownFiles():
+	logger = logging.getLogger(__name__)
+
+	if "btnExport" in request.all:
+		posts = postservice.getAllPosts()
+		zipfilePath = os.path.join(config.UPLOAD_PATH, "blog-posts.zip")
+
+		zf = zipfile.ZipFile(zipfilePath, mode="w")
+		filenames = []
+
+		try:
+			#
+			# Write each post to a file, adding each file to a ZIP
+			#
+			for post in posts:
+				filename = postservice.generateMarkdownFile(post=post)
+				filenames.append(filename)
+
+				writtenFilename = "%s/%s/%s" % (post["publishedYear"], post["publishedMonth"], os.path.basename(filename),)
+				zf.write(filename, compress_type=compression, arcname=writtenFilename)
+
+		except Exception as e:
+			logger.error("There was an error writing zipfile: %s", e.message)
+
+		finally:
+			zf.close()
+
+		#
+		# Clean out markdown files
+		#
+		for filename in filenames:
+			try:
+				os.remove(filename)
+			except Exception as e:
+				logger.error("Unable to remove %s" % (filename,))
+
+		#
+		# Serve up the ZIP file as a download
+		#
+		return static_file(os.path.basename(zipfilePath), root=config.UPLOAD_PATH)
+
+	return {
+		"title": "Export Markdown Files"
+	}
+
 @route("/admin/utilities/importmarkdownfiles", method="GET")
-@route("/admin/utilities/importmarkdownfiles", method="POST")
 @view("admin-import-markdown-files.html")
 @requireSession
 def adminImportMarkdownFiles():
