@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get -y -q install python-setuptools python-dev python-virtualenv python-mysqldb mysql-server mysql-client
+sudo apt-get -y -q install python-setuptools python-dev python-virtualenv python-mysqldb mysql-server mysql-client libmysqlclient-dev
 sudo apt-get build-dep python-mysqldb fabric
 
 # Setup a virtual environment for our application
