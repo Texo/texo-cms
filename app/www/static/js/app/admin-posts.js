@@ -97,7 +97,6 @@ require(["/static/js/config.js"], function() {
 
 			/*
 			 * Initialize datatables
-			 */
 			$("#postsTable").dataTable({
 				aaSorting: [
 					[2, "asc"],
@@ -106,8 +105,14 @@ require(["/static/js/config.js"], function() {
 				aoColumnDefs: [
 					{ bSortable: false, aTargets: [0]}
 				],
-				fnDrawCallback: attachMenus
+				fnDrawCallback: attachMenus,
+				processing: true,
+				serverSide: true,
+				ajax: "/admin/ajax/posts"
 			});
+			 */
+
+			attachMenus();
 		}
 	);
 });
