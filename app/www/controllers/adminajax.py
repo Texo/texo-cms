@@ -70,6 +70,39 @@ def ajaxDeletePost(postId):
 
 	return { "message": "Post deleted successfully!" }
 
+@route("/admin/ajax/posts", method="GET")
+@requireSession
+def ajaxGetPosts():
+	logger = logging.getLogger(__name__)
+
+	result = {}
+
+	try:
+		posts, postCount, numPages = postservice.getPosts(page=0)
+
+		result["draw"] = 1
+		result["recordsTotal"] = int(postCount)
+		result["recordsFiltered"] = int(postCount)
+		#result["data"] = map(postservice.makePageFriendlyPost, posts)
+		result["data"] = []
+
+		for post in map(postservice.makePageFriendlyPost, posts):
+			result["data"].append([
+				"",
+				post["title"],
+				post["status"],
+				post["publishedDateTime"],
+				post["tagList"]
+			])
+
+	except Exception as e:
+		logger.error(e.message, exc_info=True)
+
+		result["success"] = False
+		result["message"] = e.message
+
+	return result
+
 @route("/admin/ajax/post/<postId:int>/publish", method="PUT")
 @requireSession
 def ajaxPublishPost(postId):
