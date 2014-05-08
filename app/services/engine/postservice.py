@@ -561,6 +561,32 @@ def getPostTags():
 	return map(makeFriendlyTag, tags)
 
 #
+# Function: makeAdminTableFriendlyPost
+# Takes a post record and returns an admin "Manage Posts" table-friendly dictionary. 
+#
+# Parameters:
+#    post - A post dictionary
+#
+def makeAdminTableFriendlyPost(post):
+	tz = lambda d: dthelper.utcToTimezone(targetTimezone=config.TIMEZONE, date=d)
+	parseFormat = "%Y-%m-%d %H:%M:%S%z"
+
+	return {
+		"id"                   : post["id"],
+		"title"                : post["title"],
+		"permalink"            : "/post/{0}/{1}/{2}".format(post["publishedYear"], post["publishedMonth"], post["slug"]),
+		"publishedDateTime"    : "" if post["publishedDateTime"] == None else dthelper.formatDateTime(date=tz(post["publishedDateTime"]), parseFormat=parseFormat),
+		"publishedDate"        : "" if post["publishedDateTime"] == None else dthelper.formatDate(date=tz(post["publishedDateTime"]), parseFormat=parseFormat),
+		"publishedDateUSFormat": "" if post["publishedDateTime"] == None else dthelper.formatDate(date=tz(post["publishedDateTime"]), outputFormat="%m/%d/%Y", parseFormat=parseFormat),
+		"publishedTime"        : "" if post["publishedDateTime"] == None else dthelper.formatTime(date=tz(post["publishedDateTime"]), parseFormat=parseFormat),
+		"publishedTime12Hour"  : "" if post["publishedDateTime"] == None else dthelper.formatTime(date=tz(post["publishedDateTime"]), outputFormat="%I:%M %p", parseFormat=parseFormat),
+		"postStatusId"         : post["postStatusId"],
+		"status"               : post["status"],
+		"tagList"              : post["tagList"],
+		"tagIdList"            : post["tagIdList"],
+	}
+
+#
 # Function: makeFriendlyTag
 # Takes a tag record and returns a a friendly tag. This basically
 # adds some additional information to the tag, such as a single-tag

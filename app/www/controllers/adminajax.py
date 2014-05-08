@@ -71,29 +71,30 @@ def ajaxDeletePost(postId):
 	return { "message": "Post deleted successfully!" }
 
 @route("/admin/ajax/posts", method="GET")
+@route("/admin/ajax/posts/<page:int>", method="GET")
 @requireSession
-def ajaxGetPosts():
+def ajaxGetPosts(page=1):
 	logger = logging.getLogger(__name__)
 
 	result = {}
 
 	try:
-		posts, postCount, numPages = postservice.getPosts(page=0)
+		posts, postCount, numPages = postservice.getPosts(page=page, postsPerPage=25)
 
-		result["draw"] = 1
-		result["recordsTotal"] = int(postCount)
-		result["recordsFiltered"] = int(postCount)
-		#result["data"] = map(postservice.makePageFriendlyPost, posts)
-		result["data"] = []
-
-		for post in map(postservice.makePageFriendlyPost, posts):
-			result["data"].append([
-				"",
-				post["title"],
-				post["status"],
-				post["publishedDateTime"],
-				post["tagList"]
-			])
+		result = {
+			"posts": map(postservice.makeAdminTableFriendlyPost, posts),
+			"numPages": int(numPages),
+			"numPosts": int(postCount),
+			"currentPage": 0 if postCount <= 0 else int(page),
+			"previousPage": 1 if page < 2 else int(page - 1),
+			"nextPage": page if page >= numPages else int(page + 1),
+			"lastPage": int(numPages),
+			"showFirstPageNavButton": True if postCount > 0 and page > 1 else False,
+			"showLastPageNavButton": True if postCount > 0 and page < numPages else False,
+			"showNextPageNavButton": True if postCount > 0 and page < numPages else False,
+			"showPrevPageNavButton": True if postCount > 0 and page > 1 else False,
+			"showPageNavigation": True if postCount > 0 and numPages > 1 else False,
+		}
 
 	except Exception as e:
 		logger.error(e.message, exc_info=True)

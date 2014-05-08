@@ -15,9 +15,12 @@ require(["/static/js/config.js"], function() {
 	require(
 		[
 			"jquery", "services/PostService", "rajo.ui.bootstrapmodal",
+			"ractive", "services/PostCollection", "modules/util/Blocker",
 			"datatables-bootstrap", "bootstrap", "blockui"
 		],
-		function($, PostService, BootstrapModal) {
+		function($, PostService, BootstrapModal, Ractive, PostCollection, Blocker) {
+			Blocker.block("Loading posts...");
+
 			var
 				/*
 				 * Function: attachMenus
@@ -86,7 +89,33 @@ require(["/static/js/config.js"], function() {
 							}
 						}
 					});
-				};
+				},
+
+				ractive = new Ractive({
+					el: "postsTable",
+					template: "#postsTableTemplate",
+					data: {
+						numPages: 0,
+						posts: []
+					},
+
+					complete: function() {
+						PostCollection.getAdminPosts(1)
+							.done(function(response) {
+								ractive.set({
+									posts: response.posts,
+									numPages: response.numPages
+								});
+
+								attachMenus();
+								Blocker.unblock();
+							})
+							.fail(function() {
+								Blocker.unblock();
+								alert("There was an error retrieving posts!");
+							});
+					}
+				});
 
 
 			/*
@@ -94,25 +123,6 @@ require(["/static/js/config.js"], function() {
 			 */
 			BootstrapModal.dialogInformationImage = "/static/images/dialog-information.png";
 			BootstrapModal.dialogErrorImage = "/static/images/dialog-error.png";
-
-			/*
-			 * Initialize datatables
-			$("#postsTable").dataTable({
-				aaSorting: [
-					[2, "asc"],
-					[3, "desc"]
-				],
-				aoColumnDefs: [
-					{ bSortable: false, aTargets: [0]}
-				],
-				fnDrawCallback: attachMenus,
-				processing: true,
-				serverSide: true,
-				ajax: "/admin/ajax/posts"
-			});
-			 */
-
-			attachMenus();
 		}
 	);
 });
