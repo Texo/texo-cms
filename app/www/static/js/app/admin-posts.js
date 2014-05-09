@@ -19,7 +19,7 @@ require(["/static/js/config.js"], function() {
 		[
 			"jquery", "services/PostService", "widgets/dialog/Modal",
 			"ractive", "services/PostCollection", "modules/util/Blocker",
-			"bootstrap"
+			"bootstrap", "widgets/dialog/FilterPopup"
 		],
 		function($, PostService, Modal, Ractive, PostCollection, Blocker) {
 			var
@@ -114,6 +114,7 @@ require(["/static/js/config.js"], function() {
 						},
 
 						complete: function() {
+
 							loadPosts(1);
 						}
 					});
@@ -154,6 +155,11 @@ require(["/static/js/config.js"], function() {
 						nextPage: response.nextPage
 					}, function() {
 						attachMenus();
+						$("#filter").FilterPopup({
+							apply: function(data) {
+								console.log(data);
+							}
+						});
 						Blocker.unblock(function() {
 							$("html, body").animate({ scrollTop: 0 }, "fast");
 						});						
