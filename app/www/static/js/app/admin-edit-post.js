@@ -12,7 +12,7 @@ require(["/static/js/config.js"], function() {
 
 	require(
 		[
-			"jquery", "bootstrapValidator", "markdown-editor-s3-widget"
+			"jquery", "bootstrapValidator", "widgets/editor/MarkdownEditorS3"
 		],
 		function($) {
 			"use strict";

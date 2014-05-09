@@ -6,21 +6,22 @@
  * Dependencies:
  *    jquery
  *    services/PostService
- *    rajo.ui.bootstrapmodal
- *    datatables-bootstrap
+ *    widgets/dialog/Modal
+ *    Ractive
+ *    services/PostCollection
+ *    modules/util/Blocker
  *    bootstrap
- *    blockui
  */
 require(["/static/js/config.js"], function() {
 	"use strict";
-	
+
 	require(
 		[
-			"jquery", "services/PostService", "rajo.ui.bootstrapmodal",
+			"jquery", "services/PostService", "widgets/dialog/Modal",
 			"ractive", "services/PostCollection", "modules/util/Blocker",
 			"bootstrap"
 		],
-		function($, PostService, BootstrapModal, Ractive, PostCollection, Blocker) {
+		function($, PostService, Modal, Ractive, PostCollection, Blocker) {
 			var
 				ractive = null,
 
@@ -39,9 +40,7 @@ require(["/static/js/config.js"], function() {
 							PostService.archive(postId).done(function() {
 								window.location = "/admin/posts";
 							}).fail(function() {
-								BootstrapModal.Modal.Error({
-									body: "<p>There was an error when trying to archive your post.</p>"
-								});
+								Modal.error({ message: "There was an error when trying to archive your post." });
 							});
 						});
 					});
@@ -53,9 +52,7 @@ require(["/static/js/config.js"], function() {
 							PostService.delete(postId).done(function() {
 								window.location = "/admin/posts";
 							}).fail(function() {
-								BootstrapModal.Modal.Error({
-									body: "<p>There was an error when trying to delete your post.</p>"
-								});
+								Modal.error({ message: "There was an error when trying to delete your post." });
 							});
 						});
 					});
@@ -67,9 +64,7 @@ require(["/static/js/config.js"], function() {
 							PostService.publish(postId).done(function() {
 								window.location = "/admin/posts";
 							}).fail(function() {
-								BootstrapModal.Modal.Error({
-									body: "<p>There was an error when trying to publish your post.</p>"
-								});
+								Modal.error({ message: "There was an error when trying to publish your post." });
 							});
 						});
 					});
@@ -81,15 +76,9 @@ require(["/static/js/config.js"], function() {
 				 * when the answer is Yes.
 				 */
 				confirm = function(message, onYesFn) {
-					BootstrapModal.Modal.YesNo({
-						header: "Confirmation",
-						body: "<p>" + message + "</p>",
-						handler: function(response) {
-							if (response === "yes") {
-								$.blockUI();
-								onYesFn();
-							}
-						}
+					Modal.yesNo({
+						message: message,
+						yes: function() { Blocker.block("Loading..."); onYesFn(); }
 					});
 				},
 
@@ -175,12 +164,6 @@ require(["/static/js/config.js"], function() {
 
 			loading();
 			setupDomBinding();
-
-			/*
-			 * Set modal default image locations
-			 */
-			BootstrapModal.dialogInformationImage = "/static/images/dialog-information.png";
-			BootstrapModal.dialogErrorImage = "/static/images/dialog-error.png";
 		}
 	);
 });
