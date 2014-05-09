@@ -72,14 +72,22 @@ def ajaxDeletePost(postId):
 
 @route("/admin/ajax/posts", method="GET")
 @route("/admin/ajax/posts/<page:int>", method="GET")
+@route("/admin/ajax/posts/<page:int>/<year:int>", method="GET")
+@route("/admin/ajax/posts/<page:int>/<year:int>/<status>", method="GET")
+@route("/admin/ajax/posts/<page:int>/<year:int>/<status>/<term>", method="GET")
 @requireSession
-def ajaxGetPosts(page=1):
+def ajaxGetPosts(page=1,  year=0, status="all", term=""):
 	logger = logging.getLogger(__name__)
-
 	result = {}
 
 	try:
-		posts, postCount, numPages = postservice.getPosts(page=page, postsPerPage=25)
+		if status == "all":
+			status = None
+
+		if year == 0:
+			year = None
+			
+		posts, postCount, numPages = postservice.getPosts(page=page, postsPerPage=25, status=status, year=year, searchTerm=term)
 
 		result = {
 			"posts": map(postservice.makeAdminTableFriendlyPost, posts),

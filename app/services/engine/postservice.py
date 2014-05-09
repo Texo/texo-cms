@@ -467,6 +467,25 @@ def getPostById(id):
 	return None if len(posts) <= 0 else posts[0]
 
 #
+# Function: getPostDateRange
+# Returns a row containing the minimum and maximum years for 
+# which there are published posts.
+#
+def getPostDateRange():
+	parameters = []
+
+	sql = """
+		SELECT
+			MIN(post.publishedYear) AS minYear,
+			MAX(post.publishedYear) as maxYear
+
+		FROM post
+	"""
+
+	qry = database.query(sql=sql)
+	return qry[0]
+
+#
 # Function: getPosts
 # Retrieves a list of posts matching a set of criteria. This function
 # is generally used to return a page worth of posts and is potentially filtered
@@ -481,9 +500,9 @@ def getPostById(id):
 #    tag - Tag to filter posts by. Defaults to None
 #    postsPerPage - Number of posts per page. Defaults to 5
 #
-def getPosts(page=1, status=None, tag=None, postsPerPage=5):
+def getPosts(page=1, status=None, tag=None, postsPerPage=5, year=None, searchTerm=None):
 	start, end = calcPageStartEnd(page=page, postsPerPage=postsPerPage)
-	posts = _getPosts(status=status, tag=tag)
+	posts = _getPosts(status=status, tag=tag, year=year, searchTerm=searchTerm)
 
 	postCount = len(posts)
 

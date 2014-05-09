@@ -1,14 +1,12 @@
 define(
 	[
 		"jquery",
-		"modules/util/WidgetTools",
-		"modules/util/PubSub",
 		"modules/util/FuncTools",
 
 		"bootstrap",
 		"jqueryui"
 	],
-	function($, WidgetTools, PubSub, FuncTools) {
+	function($, FuncTools) {
 		"use strict";
 
 		var
@@ -26,11 +24,11 @@ define(
 				placement: "bottom",
 				trigger: "click",
 				title: "Filter",
-				apply: function(data) { }
+				onApply: function(data) { },
+				onClear: function() { }
 			},
 
 			_create: function() {
-				console.log("Here");
 				var 
 					self = this,
 					thisId = this.element.context.id,
@@ -38,20 +36,17 @@ define(
 					formEl = null,
 					inputEls = null;
 
-				console.log(this.element);
-				console.log($("#" + thisId).children(":first"));
-
+				/*
+				 * Find the trigger element
+				 */
 				triggerEl = $("#" + thisId).children(":first");
 				if (triggerEl.length <= 0) throw "You must provide a trigger element";
 
+				/*
+				 * There should be a form element with inputs there
+				 */
 				formEl = $("#" + thisId).children("form");
 				if (formEl.length <= 0) throw "You must provide a form element";
-
-				_popups[thisId] = {
-					options: this.options,
-					triggerEl: $(triggerEl[0]),
-					html: _createDom($(formEl[0]).html())
-				};
 
 				/*
 				 * Collect a list of all the input elements
@@ -60,12 +55,24 @@ define(
 				inputEls = $(formEl[0]).find(":input");
 				if (inputEls.length <= 0) throw "You must provide some type of form elements in your form.";
 
-				_popups[thisId].inputEls = FuncTools.map(inputEls, function(item) { return $("#" + item.id); });
+				/*
+				 * Store this config
+				 */
+				_popups[thisId] = {
+					options: this.options,
+					triggerEl: $(triggerEl[0]),
+					html: _createDom($(formEl[0]).html()),
+					inputEls: FuncTools.map(inputEls, function(item) { return item.id; })
+				};
 
-				/* Delete the original form piece */
+				/* 
+				 * Delete the original form piece 
+				 */
 				$(formEl[0]).remove();
 
-				/* Create the popover */
+				/* 
+				 * Create the popover 
+				 */
 				_popups[thisId].triggerEl.popover({
 					html: true,
 					placement: this.options.placement,
@@ -74,9 +81,25 @@ define(
 					content: _popups[thisId].html
 				});
 
-				$("#" + thisId).on("click", ".filter-popup-apply", function() {
-
+				_popups[thisId].triggerEl.on("shown.bs.popover", function() {
+					$("#" + _popups[thisId].inputEls[0]).focus();
 				});
+
+				/*
+				 * Attach the Apply and Clear button events
+				 */
+				$("#" + thisId).on("click", ".filter-popup-apply", function() {
+					var packet = FuncTools.mapArrayToObject(_popups[thisId].inputEls, function(item) {
+						return {
+							key: item,
+							value: $("#" + item).val()
+						};
+					});
+
+					self.options.onApply(packet);
+				});
+
+				$("#" + thisId).on("click", ".filter-popup-clear", this.options.onClear);
 
 				this._super();
 			}

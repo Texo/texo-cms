@@ -86,8 +86,8 @@ require(["/static/js/config.js"], function() {
 					Blocker.block("Loading posts...");
 				},
 
-				loadPosts = function(page) {
-					PostCollection.getAdminPosts(page)
+				loadPosts = function(page, packet) {
+					PostCollection.getAdminPosts(page, packet)
 						.done(function(response) {
 							updatePostGrid(response);
 						})
@@ -114,6 +114,14 @@ require(["/static/js/config.js"], function() {
 						},
 
 						complete: function() {
+							$("#filter").FilterPopup({
+								onApply: function(data) {
+									loadPosts(1, data);
+								},
+								onClear: function() {
+									loadPosts(1);
+								}
+							});
 
 							loadPosts(1);
 						}
@@ -155,11 +163,6 @@ require(["/static/js/config.js"], function() {
 						nextPage: response.nextPage
 					}, function() {
 						attachMenus();
-						$("#filter").FilterPopup({
-							apply: function(data) {
-								console.log(data);
-							}
-						});
 						Blocker.unblock(function() {
 							$("html, body").animate({ scrollTop: 0 }, "fast");
 						});						

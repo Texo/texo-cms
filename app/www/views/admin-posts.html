@@ -22,6 +22,36 @@
 
 	<%block name="script">
 		<script type="ractive" id="postsTableTemplate">
+			<div id="filter">
+				<button type="button" class="btn btn-primary">Filter</button>
+				<form>
+					<div class="form-group">
+						<label for="term">Term</label>
+						<input type="text" class="form-control" id="term" placeholder="Search term" />
+					</div>
+					<div class="form-group">
+						<label for="status">Status</label>
+						<select id="status" class="form-control">
+							<option value="all">All</option>
+							<option value="Published">Published</option>
+							<option value="Draft">Draft</option>
+							<option value="Archived">Archived</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="year">Year</label>
+						<select id="year" class="form-control">
+							<option value="0">All</option>
+							% for year in yearRange:
+								<option value="${year}">${year}</option>
+							% endfor
+						</select>
+					</div>
+				</form>
+			</div>
+
+			<br />
+
 			{{ # numPages <= 0 }}
 				<div class="alert alert-info">
 					There are no posts to manage. How about you
@@ -30,24 +60,6 @@
 			{{ /numPages <= 0 }}
 
 			{{ # numPages > 0 }}
-				<div id="filter">
-					<button type="button" class="btn btn-primary">Filter</button>
-					<form>
-						<div class="form-group">
-							<label for="term">Term</label>
-							<input type="text" class="form-control" id="term" placeholder="Search term" />
-						</div>
-						<div class="form-group">
-							<label for="status">Status</label>
-							<select id="status" class="form-control">
-								<option value="all">All</option>
-								<option value="published">Published</option>
-								<option value="draft">Draft</option>
-							</select>
-						</div>
-					</form>
-				</div>
-
 				<table id="postsTable" class="table table-striped">
 					<thead>
 						<tr>
