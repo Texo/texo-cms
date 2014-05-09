@@ -12,16 +12,18 @@
  *    blockui
  */
 require(["/static/js/config.js"], function() {
+	"use strict";
+	
 	require(
 		[
 			"jquery", "services/PostService", "rajo.ui.bootstrapmodal",
 			"ractive", "services/PostCollection", "modules/util/Blocker",
-			"datatables-bootstrap", "bootstrap", "blockui"
+			"bootstrap"
 		],
 		function($, PostService, BootstrapModal, Ractive, PostCollection, Blocker) {
-			Blocker.block("Loading posts...");
-
 			var
+				ractive = null,
+
 				/*
 				 * Function: attachMenus
 				 * Attaches event handlers to Bootstrap menus when Datatables
@@ -91,32 +93,88 @@ require(["/static/js/config.js"], function() {
 					});
 				},
 
-				ractive = new Ractive({
-					el: "postsTable",
-					template: "#postsTableTemplate",
-					data: {
-						numPages: 0,
-						posts: []
-					},
+				loading = function() {
+					Blocker.block("Loading posts...");
+				},
 
-					complete: function() {
-						PostCollection.getAdminPosts(1)
-							.done(function(response) {
-								ractive.set({
-									posts: response.posts,
-									numPages: response.numPages
-								});
+				loadPosts = function(page) {
+					PostCollection.getAdminPosts(page)
+						.done(function(response) {
+							updatePostGrid(response);
+						})
+						.fail(function() {
+							Blocker.unblock();
+							alert("There was an error retrieving posts!");
+						});
+				},
 
-								attachMenus();
-								Blocker.unblock();
-							})
-							.fail(function() {
-								Blocker.unblock();
-								alert("There was an error retrieving posts!");
-							});
-					}
-				});
+				setupDomBinding = function() {
+					ractive = new Ractive({
+						el: "postsTable",
+						template: "#postsTableTemplate",
+						data: {
+							numPages: 0,
+							posts: [],
+							showPageNavigation: false,
+							showFirstPageNavButton: false,
+							showPrevPageNavButton: false,
+							showNextPageNavButton: false,
+							showLastPageNavButton: false,
+							previousPage: 0,
+							nextPage: 0
+						},
 
+						complete: function() {
+							loadPosts(1);
+						}
+					});
+
+					ractive.on({
+						firstPage: function(e) {
+							loading();
+							loadPosts(1);
+						},
+
+						lastPage: function(e) {
+							loading();
+							loadPosts(e.context.numPages);
+						},
+
+						nextPage: function(e) {
+							loading();
+							loadPosts(e.context.nextPage);
+						},
+
+						previousPage: function(e) {
+							loading();
+							loadPosts(e.context.previousPage);
+						}
+					});
+				},
+
+				updatePostGrid = function(response) {
+					ractive.set({
+						posts: response.posts,
+						numPages: response.numPages,
+						showPageNavigation: response.showPageNavigation,
+						showFirstPageNavButton: response.showFirstPageNavButton,
+						showPrevPageNavButton: response.showPrevPageNavButton,
+						showNextPageNavButton: response.showNextPageNavButton,
+						showLastPageNavButton: response.showLastPageNavButton,
+						previousPage: response.previousPage,
+						nextPage: response.nextPage
+					}, function() {
+						attachMenus();
+						Blocker.unblock(function() {
+							$("html, body").animate({ scrollTop: 0 }, "fast");
+						});						
+					});
+
+				};
+
+
+			loading();
+			setupDomBinding();
 
 			/*
 			 * Set modal default image locations

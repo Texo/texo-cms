@@ -73,6 +73,26 @@
 						{{ /posts }}
 					</tbody>
 				</table>
+
+				{{ # showPageNavigation === true }}
+					<ul class="pagination pagination-lg">
+						{{ # showFirstPageNavButton === true }}
+							<li><a on-click="firstPage" class="cursor">First Page</a></li>
+						{{ / showFirstPageNavButton === true }}
+						
+						{{ # showPrevPageNavButton === true }}
+							<li><a on-click="previousPage" class="cursor">&laquo; Page {{ previousPage }}</a></li>
+						{{ / showPrevPageNavButton === true }}
+
+						{{ # showNextPageNavButton === true }}
+							<li><a on-click="nextPage" class="cursor">Page {{ nextPage }} &raquo; </a></li>
+						{{ / showNextPageNavButton === true }}
+
+						{{ # showLastPageNavButton === true }}
+							<li><a on-click="lastPage" class="cursor">Last Page</a></li>
+						{{ / showLastPageNavButton === true }}
+					</ul>
+				{{ / showPageNavigation === true }}
 			{{ /numPages > 0 }}
 		</script>
 
