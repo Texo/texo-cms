@@ -33,7 +33,9 @@ require.config({
 		"jqplot.canvasAxisTickRenderer": "jqplot/jqplot.canvasAxisTickRenderer.min",
 		"jqplot.categoryAxisRenderer": "jqplot/jqplot.categoryAxisRenderer.min",
 
-		"uploadify": "uploadify/jquery.uploadify.min"
+		"uploadify": "uploadify/jquery.uploadify.min",
+
+		"ractive": "Ractive"
 	},
 	shim: {
 		"jqueryui": { deps: ["jquery"] },

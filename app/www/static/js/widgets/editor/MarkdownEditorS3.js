@@ -9,13 +9,13 @@
  *    $.MarkdownEditorS3
  *
  * RequireJS Name:
- *    markdown-editor-s3-widget
+ *    MarkdownEditorS3
  *
  * Dependencies:
  *    jquery
- *    rajo.pubsub
- *    widget-tools
- *    s3browser-widget
+ *    modules/util/PubSub
+ *    modules/util/WidgetTools
+ *    widgets/dialog/S3Browser
  *    markdown-editor
  *
  * Example:
@@ -27,12 +27,12 @@
  */
 define(
 	[
-		"jquery", "rajo.pubsub", "widget-tools", "s3browser-widget", "markdown-editor"
+		"jquery", "modules/util/PubSub", "modules/util/WidgetTools", "widgets/dialog/S3Browser", "markdown-editor"
 	],
 	function($, PubSub, WidgetTools) {
 		"use strict";
 
-		$.widget("adampresley.MarkdownEditorS3", {
+		$.widget("rajo.MarkdownEditorS3", {
 			_create: function() {
 				var
 					self = this,

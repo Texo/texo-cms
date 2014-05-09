@@ -15,13 +15,13 @@
  *    $.S3Browser
  *
  * RequireJS Name:
- *    s3browser-widget
+ *    widgets/dialog/S3Browser
  *
  * Dependencies:
  *    jquery
  *    jqueryui
- *    rajo.pubsub
- *    widget-tools
+ *    modules/util/PubSub
+ *    modules/util/WidgetTools
  *    uploadify
  *
  * Commands:
@@ -38,7 +38,7 @@
  */
 define(
 	[
-		"jquery", "rajo.pubsub", "widget-tools", "jqueryui", "uploadify"
+		"jquery", "modules/util/PubSub", "modules/util/WidgetTools", "jqueryui", "uploadify"
 	],
 	function($, PubSub, WidgetTools) {
 		"use strict";
@@ -279,7 +279,7 @@ define(
 		 * Create the widget in the "adampresley" namespace using the
 		 * jQuery UI WidgetFactory.
 		 */
-		$.widget("adampresley.S3Browser", $.ui.dialog, {
+		$.widget("rajo.S3Browser", $.ui.dialog, {
 			_create: function() {
 				var id = this.element[0].id;
 				var self = this;

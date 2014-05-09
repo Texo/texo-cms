@@ -70,6 +70,48 @@ def ajaxDeletePost(postId):
 
 	return { "message": "Post deleted successfully!" }
 
+@route("/admin/ajax/posts", method="GET")
+@route("/admin/ajax/posts/<page:int>", method="GET")
+@route("/admin/ajax/posts/<page:int>/<year:int>", method="GET")
+@route("/admin/ajax/posts/<page:int>/<year:int>/<status>", method="GET")
+@route("/admin/ajax/posts/<page:int>/<year:int>/<status>/<term>", method="GET")
+@requireSession
+def ajaxGetPosts(page=1,  year=0, status="all", term=""):
+	logger = logging.getLogger(__name__)
+	result = {}
+
+	try:
+		if status == "all":
+			status = None
+
+		if year == 0:
+			year = None
+			
+		posts, postCount, numPages = postservice.getPosts(page=page, postsPerPage=25, status=status, year=year, searchTerm=term)
+
+		result = {
+			"posts": map(postservice.makeAdminTableFriendlyPost, posts),
+			"numPages": int(numPages),
+			"numPosts": int(postCount),
+			"currentPage": 0 if postCount <= 0 else int(page),
+			"previousPage": 1 if page < 2 else int(page - 1),
+			"nextPage": page if page >= numPages else int(page + 1),
+			"lastPage": int(numPages),
+			"showFirstPageNavButton": True if postCount > 0 and page > 1 else False,
+			"showLastPageNavButton": True if postCount > 0 and page < numPages else False,
+			"showNextPageNavButton": True if postCount > 0 and page < numPages else False,
+			"showPrevPageNavButton": True if postCount > 0 and page > 1 else False,
+			"showPageNavigation": True if postCount > 0 and numPages > 1 else False,
+		}
+
+	except Exception as e:
+		logger.error(e.message, exc_info=True)
+
+		result["success"] = False
+		result["message"] = e.message
+
+	return result
+
 @route("/admin/ajax/post/<postId:int>/publish", method="PUT")
 @requireSession
 def ajaxPublishPost(postId):

@@ -467,6 +467,25 @@ def getPostById(id):
 	return None if len(posts) <= 0 else posts[0]
 
 #
+# Function: getPostDateRange
+# Returns a row containing the minimum and maximum years for 
+# which there are published posts.
+#
+def getPostDateRange():
+	parameters = []
+
+	sql = """
+		SELECT
+			MIN(post.publishedYear) AS minYear,
+			MAX(post.publishedYear) as maxYear
+
+		FROM post
+	"""
+
+	qry = database.query(sql=sql)
+	return qry[0]
+
+#
 # Function: getPosts
 # Retrieves a list of posts matching a set of criteria. This function
 # is generally used to return a page worth of posts and is potentially filtered
@@ -481,9 +500,9 @@ def getPostById(id):
 #    tag - Tag to filter posts by. Defaults to None
 #    postsPerPage - Number of posts per page. Defaults to 5
 #
-def getPosts(page=1, status=None, tag=None, postsPerPage=5):
+def getPosts(page=1, status=None, tag=None, postsPerPage=5, year=None, searchTerm=None):
 	start, end = calcPageStartEnd(page=page, postsPerPage=postsPerPage)
-	posts = _getPosts(status=status, tag=tag)
+	posts = _getPosts(status=status, tag=tag, year=year, searchTerm=searchTerm)
 
 	postCount = len(posts)
 
@@ -559,6 +578,32 @@ def getPostTags():
 	""")
 
 	return map(makeFriendlyTag, tags)
+
+#
+# Function: makeAdminTableFriendlyPost
+# Takes a post record and returns an admin "Manage Posts" table-friendly dictionary. 
+#
+# Parameters:
+#    post - A post dictionary
+#
+def makeAdminTableFriendlyPost(post):
+	tz = lambda d: dthelper.utcToTimezone(targetTimezone=config.TIMEZONE, date=d)
+	parseFormat = "%Y-%m-%d %H:%M:%S%z"
+
+	return {
+		"id"                   : post["id"],
+		"title"                : post["title"],
+		"permalink"            : "/post/{0}/{1}/{2}".format(post["publishedYear"], post["publishedMonth"], post["slug"]),
+		"publishedDateTime"    : "" if post["publishedDateTime"] == None else dthelper.formatDateTime(date=tz(post["publishedDateTime"]), parseFormat=parseFormat),
+		"publishedDate"        : "" if post["publishedDateTime"] == None else dthelper.formatDate(date=tz(post["publishedDateTime"]), parseFormat=parseFormat),
+		"publishedDateUSFormat": "" if post["publishedDateTime"] == None else dthelper.formatDate(date=tz(post["publishedDateTime"]), outputFormat="%m/%d/%Y", parseFormat=parseFormat),
+		"publishedTime"        : "" if post["publishedDateTime"] == None else dthelper.formatTime(date=tz(post["publishedDateTime"]), parseFormat=parseFormat),
+		"publishedTime12Hour"  : "" if post["publishedDateTime"] == None else dthelper.formatTime(date=tz(post["publishedDateTime"]), outputFormat="%I:%M %p", parseFormat=parseFormat),
+		"postStatusId"         : post["postStatusId"],
+		"status"               : post["status"],
+		"tagList"              : post["tagList"],
+		"tagIdList"            : post["tagIdList"],
+	}
 
 #
 # Function: makeFriendlyTag

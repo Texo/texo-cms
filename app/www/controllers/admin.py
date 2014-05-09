@@ -229,25 +229,14 @@ def adminLogout():
 @requireSession
 def adminPosts(message=""):
 	logger = logging.getLogger(__name__)
+	minMaxYears = postservice.getPostDateRange()
 
 	result = {
 		"title": "Manage Posts",
-
 		"success": True,
 		"message": message,
+		"yearRange": range(minMaxYears["minYear"], minMaxYears["maxYear"] + 1),
 	}
-
-	try:
-		posts, postCount, numPages = postservice.getPosts(page=0)
-
-		result["posts"] = map(postservice.makePageFriendlyPost, posts)
-		result["numPages"] = int(numPages)
-
-	except Exception as e:
-		logger.error(e.message, exc_info=True)
-
-		result["success"] = False
-		result["message"] = e.message
 
 	return result
 

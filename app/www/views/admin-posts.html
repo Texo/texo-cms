@@ -18,61 +18,114 @@
 		</div>
 	% endif
 
-	% if numPages <= 0:
-		<div class="alert alert-info">
-			There are no posts to manage. How about you
-			<a href="/admin/writepost">write something</a>?
-		</div>
+	<div id="postsTable"></div>
 
-	% else:
-		<table id="postsTable" class="table table-striped">
-			<thead>
-				<tr>
-					<th>&nbsp;</th>
-					<th style="width: 60%;">Title</th>
-					<th style="width: 10%;">Status</th>
-					<th style="width: 11%;">Published</th>
-					<th style="width: 19%;">Tags</th>
-				</tr>
-			</thead>
+	<%block name="script">
+		<script type="ractive" id="postsTableTemplate">
+			<div id="filter">
+				<button type="button" class="btn btn-primary">Filter</button>
+				<form>
+					<div class="form-group">
+						<label for="term">Term</label>
+						<input type="text" class="form-control" id="term" placeholder="Search term" />
+					</div>
+					<div class="form-group">
+						<label for="status">Status</label>
+						<select id="status" class="form-control">
+							<option value="all">All</option>
+							<option value="Published">Published</option>
+							<option value="Draft">Draft</option>
+							<option value="Archived">Archived</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="year">Year</label>
+						<select id="year" class="form-control">
+							<option value="0">All</option>
+							% for year in yearRange:
+								<option value="${year}">${year}</option>
+							% endfor
+						</select>
+					</div>
+				</form>
+			</div>
 
-			<tbody>
-				% for post in posts:
-					<tr>
-						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-									<span class="glyphicon glyphicon-cog"></span>
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									% if post["status"] == "Draft" or post["status"] == "Archived":
-										<li><a href="#" class="publishLink" data-id="${post['id']}"><span class="glyphicon glyphicon-cloud-upload"></span>&nbsp; Publish</a></li>
-										<li><a href="#" class="deleteLink" data-id="${post['id']}"><span class="glyphicon glyphicon-trash"></span>&nbsp; Delete</a></li>
-									% endif
+			<br />
 
-									% if post["status"] == "Published":
-										<li><a href="#" class="archiveLink" data-id="${post['id']}"><span class="glyphicon glyphicon-folder-close"></span>&nbsp; Archive</a></li>
-										<li><a href="${post['permalink']}" target="_blank" class="viewPostLink"><span class="glyphicon glyphicon-new-window"></span>&nbsp; View Post</a></li>
-									% endif
+			{{ # numPages <= 0 }}
+				<div class="alert alert-info">
+					There are no posts to manage. How about you
+					<a href="/admin/writepost">write something</a>?
+				</div>
+			{{ /numPages <= 0 }}
 
+			{{ # numPages > 0 }}
+				<table id="postsTable" class="table table-striped">
+					<thead>
+						<tr>
+							<th>&nbsp;</th>
+							<th style="width: 60%;">Title</th>
+							<th style="width: 10%;">Status</th>
+							<th style="width: 11%;">Published</th>
+							<th style="width: 19%;">Tags</th>
+						</tr>
+					</thead>
 
-								</ul>
-							</div>
-						</td>
-						<td>
-							<a href="/admin/editpost/${post['id']}">${post["title"]}</a>
-						</td>
-						<td>${post["status"]}</td>
-						<td>${post["publishedDateTime"]}</td>
-						<td>${post["tagList"]}</td>
-					</tr>
-				% endfor
-			</tbody>
-		</table>
+					<tbody>
+						{{ # posts }}
+							<tr>
+								<td>
+									<div class="btn-group">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+											<span class="glyphicon glyphicon-cog"></span>
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											{{ # status === "Draft" || status === "Archived" }}
+												<li><a href="#" class="publishLink" data-id="{{ id }}"><span class="glyphicon glyphicon-cloud-upload"></span>&nbsp; Publish</a></li>
+												<li><a href="#" class="deleteLink" data-id="{{ id }}"><span class="glyphicon glyphicon-trash"></span>&nbsp; Delete</a></li>
+											{{ /statusDraftAndArchived }}
 
-		<%block name="script">
-			<script type="text/javascript" src="/static/js/app/admin-posts.js"></script>
-		</%block>
-	% endif
+											{{ # status === "Published" }}
+												<li><a href="#" class="archiveLink" data-id="{{ id }}"><span class="glyphicon glyphicon-folder-close"></span>&nbsp; Archive</a></li>
+												<li><a href="{{ permalink }}" target="_blank" class="viewPostLink"><span class="glyphicon glyphicon-new-window"></span>&nbsp; View Post</a></li>
+											{{ /statusPublished }}
+										</ul>
+									</div>
+								</td>
+								<td>
+									<a href="/admin/editpost/{{ id }}">{{ title }}</a>
+								</td>
+								<td>{{ status }}</td>
+								<td>{{ publishedDateTime }}</td>
+								<td>{{ tagList }}</td>
+							</tr>
+						{{ /posts }}
+					</tbody>
+				</table>
+
+				{{ # showPageNavigation === true }}
+					<ul class="pagination pagination-lg">
+						{{ # showFirstPageNavButton === true }}
+							<li><a on-click="firstPage" class="cursor">First Page</a></li>
+						{{ / showFirstPageNavButton === true }}
+						
+						{{ # showPrevPageNavButton === true }}
+							<li><a on-click="previousPage" class="cursor">&laquo; Page {{ previousPage }}</a></li>
+						{{ / showPrevPageNavButton === true }}
+
+						{{ # showNextPageNavButton === true }}
+							<li><a on-click="nextPage" class="cursor">Page {{ nextPage }} &raquo; </a></li>
+						{{ / showNextPageNavButton === true }}
+
+						{{ # showLastPageNavButton === true }}
+							<li><a on-click="lastPage" class="cursor">Last Page</a></li>
+						{{ / showLastPageNavButton === true }}
+					</ul>
+				{{ / showPageNavigation === true }}
+			{{ /numPages > 0 }}
+		</script>
+
+		<script type="text/javascript" src="/static/js/app/admin-posts.js"></script>
+	</%block>
 % endif

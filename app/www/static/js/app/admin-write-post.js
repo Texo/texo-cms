@@ -14,7 +14,7 @@ require(["/static/js/config.js"], function() {
 	require(
 		[
 			"jquery", "rajo.pubsub", "tools-service", "bootstrapValidator",
-			"markdown-editor-s3-widget"
+			"widgets/editor/MarkdownEditorS3"
 		],
 		function($, PubSub, ToolsService) {
 			/*
