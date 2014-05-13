@@ -35,7 +35,8 @@ require.config({
 
 		"uploadify": "uploadify/jquery.uploadify.min",
 
-		"ractive": "Ractive"
+		"ractive": "Ractive",
+		"oocharts": "oocharts"
 	},
 	shim: {
 		"jqueryui": { deps: ["jquery"] },
@@ -51,6 +52,7 @@ require.config({
 		"jqplot.canvasAxisTickRenderer": { deps: ["jqplot"] },
 		"jqplot.categoryAxisRenderer": { deps: ["jqplot"] },
 
-		"uploadify": { deps: ["jquery"] }
+		"uploadify": { deps: ["jquery"] },
+		"oocharts": { exports: "oo" }
 	}
 });
