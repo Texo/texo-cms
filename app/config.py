@@ -4,15 +4,15 @@ import os
 # Blog Settings
 # Configure the specifics of your blog here.
 #
-BLOG_TITLE = "Adam.Blog()"
+BLOG_TITLE = ""
 BLOG_TAGLINE = ""
 POSTS_PER_PAGE = 5
 CODE_LINE_NUMBERS = False
 
-HASH_KEY_1 = "12345"
-HASH_KEY_2 = "54321"
-ENCRYPTION_KEY = "key"
-ENCRYPTION_IV = "salt"
+HASH_KEY_1 = ""
+HASH_KEY_2 = ""
+ENCRYPTION_KEY = ""
+ENCRYPTION_IV = ""
 
 
 
@@ -37,23 +37,24 @@ ENVIRONMENT = {
 	"DOMAIN": "localhost",
 	"BIND_TO_HOST": "localhost",
 	"BIND_TO_PORT": 8080,
-	"SESSION_URL": "mysql://root:password@localhost/texocms",
-	"DB_HOST": "localhost",
-	"DB_NAME": "texocms",
+	"SESSION_URL": "",
+	"DB_HOST": "",
+	"DB_NAME": "",
 	"DB_PORT": 3306,
-	"DB_USER": "root",
-	"DB_PASSWORD": "password",
+	"DB_USER": "",
+	"DB_PASSWORD": "",
 	"PROCESS_NAME": "texocms",
 	"PIDFILE": "texocms-pid",
 	"NUM_WORKER_PROCESSES": 4,
 }
 
 SESSION_OPTS = {
-	"session.type"          : "ext:database",
-	"session.url"           : ENVIRONMENT["SESSION_URL"],
-	"session.cookie_expires": 14400,
-	"session.auto"          : True,
-	"session.lock_dir"      : os.path.join(SESSION_PATH, "lock"),
+	"session.type"              : "ext:database",
+	"session.url"               : ENVIRONMENT["SESSION_URL"],
+	"session.cookie_expires"    : 14400,
+	"session.auto"              : True,
+	"session.lock_dir"          : os.path.join(SESSION_PATH, "lock"),
+	"session.invalidate_corrupt": True,
 }
 
 CACHE_OPTS = {
