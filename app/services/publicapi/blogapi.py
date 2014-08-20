@@ -48,10 +48,16 @@ def decorateDictionaryWithAPI(object={}):
 	object["THEME_PATH"] = themeservice.getFullThemePath(themeName=request.themeName)
 	object["THEME_STATIC_PATH"] = themeservice.getThemeStaticPath(themeName=request.themeName)
 
-	# Date/time methods
+	# Date/time methods and constants
 	object["formatDateTime"] = dthelper.formatDateTime
 	object["formatDate"] = dthelper.formatDate
 	object["formatTime"] = dthelper.formatTime
+
+	object["REST_DATE_FORMAT"] = dthelper.REST_DATE_FORMAT
+	object["REST_DATETIME_FORMAT"] = dthelper.REST_DATETIME_FORMAT
+	object["US_DATE_FORMAT"] = dthelper.US_DATE_FORMAT
+	object["US_DATETIME_FORMAT"] = dthelper.US_DATETIME_FORMAT
+	object["US_TIME_FORMAT"] = dthelper.US_TIME_FORMAT
 
 	# Tag methods
 	object["getPostTags"] = postservice.getPostTags
