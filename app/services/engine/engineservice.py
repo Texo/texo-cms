@@ -18,6 +18,9 @@ import logging.handlers
 
 from bottle import run
 
+def buildUrl(path):
+	return "%s/v1%s" % (getServiceUrl(), path,)
+
 #
 # Function: configureLogging
 # Sets up a rotating file log called *application.log* in
@@ -65,6 +68,9 @@ def getDebugSetting():
 #
 def getInstalledThemeNames():
 	return os.listdir(config.THEME_PATH)
+
+def getServiceUrl():
+	return "http://%s:%s" % (os.getenv("TEXO_SERVER_ADDRESS"), os.getenv("TEXO_SERVER_PORT"),)
 
 #
 # Function: getSettings
