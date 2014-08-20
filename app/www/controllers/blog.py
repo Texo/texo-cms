@@ -56,22 +56,3 @@ def getPostsByTag(tag, page=1):
 def getPostByDateAndSlug(year, month, slug):
 	post = requests.get(engineservice.buildUrl("/post/%d/%d/%s" % (year, month, slug,)))
 	return blogapi.decorateDictionaryWithAPI(object=post.json())
-
-
-###############################################################################
-# Tag routes
-###############################################################################
-@route("/tags.json", method="GET")
-def getTagsAsJson():
-	return {
-		"tags": postservice.getPostTags()
-	}
-
-@route("/tag/<id:int>.json", method="GET")
-def getTagByIdAsJson(id):
-	tag = postservice.getPostTagById(id=id)
-
-	if tag:
-		return postservice.makeFriendlyTag(tag=tag)
-	else:
-		return httpservice.notFound(response=response, message="Tag not found")
