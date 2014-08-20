@@ -1,4 +1,5 @@
 import config
+import requests
 
 from bottle import route
 from bottle import template
@@ -13,6 +14,7 @@ from datetime import datetime
 from services.http import httpservice
 from services.publicapi import blogapi
 from services.engine import postservice
+from services.engine import engineservice
 
 ###############################################################################
 # Posts Routes
@@ -22,26 +24,26 @@ from services.engine import postservice
 @route("/", method="GET")
 @view("posts.html")
 def index():
-	return blogapi.decorateDictionaryWithAPI(object=_getPosts(page=1))
+	posts = requests.get(engineservice.buildUrl("/posts/1"))
+	return blogapi.decorateDictionaryWithAPI(object=posts.json())
 
 @route("/posts/<page:int>", method="GET")
 @view("posts.html")
 def getPosts(page):
-	return blogapi.decorateDictionaryWithAPI(object=_getPosts(page=page))
-
-@route("/posts/<page:int>.json", method="GET")
-def getPostsAsJson(page):
-	return _getPosts(page=page)
+	posts = requests.get(engineservice.buildUrl("/posts/%d" % (page,)))
+	return blogapi.decorateDictionaryWithAPI(object=posts.json())
 
 @route("/posts/search/<searchTerm>.json", method="GET")
 def getPostsBySearchAsJson(searchTerm):
-	return _searchPosts(searchTerm=searchTerm)
+	posts = requests.get(engineservice.buildUrl("/posts/1/search/%s" % (searchTerm,)))
+	return posts.json()
 
 @route("/posts/<tag>", method="GET")
 @route("/posts/<tag>/<page:int>", method="GET")
 @view("posts.html")
 def getPostsByTag(tag, page=1):
-	result = blogapi.decorateDictionaryWithAPI(object=_getPosts(page=page, tag=tag))
+	posts = requests.get(engineservice.buildUrl("/posts/%d/tag/%s" % (page, tag,)))
+	result = blogapi.decorateDictionaryWithAPI(object=posts.json())
 	result["tag"] = tag
 	return result
 

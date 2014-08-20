@@ -24,7 +24,7 @@
  *    >    $("#someDiv").SearchWidget("open");
  *    > });
  */
-define(["jquery", "widget-tools", "jqueryui"], function($, WidgetTools) {
+define(["jquery", "widget-tools", "moment", "jqueryui"], function($, WidgetTools, Moment) {
 	"use strict";
 
 	/***************************************************************************
@@ -90,13 +90,17 @@ define(["jquery", "widget-tools", "jqueryui"], function($, WidgetTools) {
 
 			if (posts.length > 0) {
 				$.each(posts, function(index, post) {
+					var
+						formattedDate = Moment(post.publishedDateTime).format("MM/DD/YYYY"),
+						formattedTime = Moment(post.publishedDateTime).format("h:mm A");
+
 					html += "<tr>" +
 						"  <td style=\"width: 80%;\">" +
 						"    <a href=\"" + post.permalink + "\">" + post.title + "</a>" +
 						"    <br />" +
-						"    " + $.trim(post.renderedContent).substring(0, 55) + "..." +
+						"    " + $.trim(post.content).substring(0, 55) + "..." +
 						"  </td>" +
-						"  <td style=\"text-align: right;\">" + post.publishedDateUSFormat + " " + post.publishedTime12Hour + "</td>" +
+						"  <td style=\"text-align: right;\">" + formattedDate + " " + formattedTime + "</td>" +
 						"</tr>";
 				});
 			} else {
