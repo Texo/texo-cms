@@ -41,7 +41,11 @@ US_DATE_FORMAT = "%m/%d/%Y"
 
 # Constant: US_DATETIME_FORMAT
 # US-style date format: *%m/%d/%Y %I:%M %p*
-US_DATE_FORMAT = "%m/%d/%Y %I:%M %p"
+US_DATETIME_FORMAT = "%m/%d/%Y %I:%M %p"
+
+# Constant: US_TIME_FORMAT
+# US_style time format: *%I:%M %p*
+US_TIME_FORMAT = "%I:%M %p"
 
 # CONSTANT: PY_TO_JS_FORMATS
 # A dictionary of Python to JavaScript date formats
